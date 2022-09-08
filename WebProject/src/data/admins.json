@@ -1,0 +1,34 @@
+[
+	{
+		"username": "admin1",
+		"password": "password1",
+		"firstName" : "Ada",
+		"lastName": "Adic",
+		"gender": "FEMALE",
+		"dateOfBirth": "1990-04-21",
+		"role": "ADMIN",
+		"deleted": false
+	},
+	
+	{
+		"username": "admin2",
+		"password": "password2",
+		"firstName" : "Aca",
+		"lastName": "Acic",
+		"gender": "MALE",
+		"dateOfBirth": "1985-05-05",
+		"role": "ADMIN",
+		"deleted": false
+	},
+	
+	{
+		"username": "test",
+		"password": "test1",
+		"firstName" : "Tasko",
+		"lastName": "Tanasic",
+		"gender": "MALE",
+		"dateOfBirth": "1993-08-07",
+		"role": "ADMIN",
+		"deleted": false
+	}
+]

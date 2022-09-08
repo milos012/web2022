@@ -1,0 +1,165 @@
+@charset "UTF-8";
+
+html{
+    height: 100%;
+}
+
+body{
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+*{
+    box-sizing: border-box;
+}
+
+#background-image {
+    background-image: url("../images/bgp.jpg");
+  
+    filter: blur(3px);
+    -webkit-filter: blur(3px);
+
+    height: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    transform: scale(1.1);
+  }
+
+#add-manifestation-block{
+	height: 90%;
+	width: 80%;
+	
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	
+	background-color: rgba(0, 0, 0, 0.7);
+	border-radius: 20px;
+	transform: translate(-50%, -50%);
+	text-align: center;
+}
+
+input{
+    height: 30px;
+    background-color: transparent;
+    border: none;
+    border-bottom: 2px solid white;
+    color: white;
+    font-size: 25px;
+    border-radius: 10px;
+    float: left;
+}
+
+input[name="name"], input[name="capacity"], input[name="priceOfRegularTicket"]{
+	float:right;
+}
+
+select{
+    height: 30px;
+    background-color: transparent;
+    border: none;
+    border-bottom: 2px solid white;
+    color: white;
+    font-size: 20px;
+    border-radius: 10px;
+    float: right;
+}
+
+input:focus{
+    outline: none;
+}
+
+label{
+
+    font-size: 25px;
+    color: white;
+    margin-right: 20px;
+    margin-left: 20px;
+    float: left;
+}
+
+table td{
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+table{
+	position: relative;
+	left: 50%;
+	transform: translate(-50%, 0);
+	margin-top: 20px;
+}
+
+select{
+    height: 30px;
+    width: 307px;
+    font-size: 25px;
+    background-color: black;
+    color: blue;
+    border: none;
+    margin-right: 0;
+    padding-left: 50px;
+    float: right;
+    border-radius: 10px;
+    transition: 1s ease;
+}
+
+select:expand{
+  transition: 1s ease;
+}
+
+select:hover{
+    transition: 0.5s ease;
+    background-color: white;
+    color: blue;
+    cursor: pointer;
+}
+
+select:focus{
+    outline: none;
+}
+
+option{
+    background-color: transparent;
+}
+
+input[type="datetime-local"]{
+	background-color:black;
+	color:blue;
+	padding: 10px;
+	width: 300px;
+	
+}
+
+input[type="datetime-local"]:focus{
+    outline: none;
+}
+
+input[type="submit"]{
+	background-color:black;
+	color: blue;
+    height: 50px;
+    width: 100%;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+input[type="submit"]:focus{
+    outline: none;
+}
+
+input[type="submit"]:hover{
+    transition: 1s ease;
+    background-color:white;
+    color:blue;
+}
+
+#poster{
+	width: 300px;
+	float:right;
+}

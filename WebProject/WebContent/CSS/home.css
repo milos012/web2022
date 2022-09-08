@@ -1,0 +1,432 @@
+@import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #fafafa;
+}
+
+a,
+a:hover,
+a:focus {
+    color: inherit;
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+.navbar {
+    padding: 15px 10px;
+    background: #fff;
+    border: none;
+    border-radius: 0;
+    margin-bottom: 40px;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-btn {
+    box-shadow: none;
+    outline: none !important;
+    border: none;
+}
+
+.line {
+    width: 100%;
+    height: 1px;
+    border-bottom: 1px dashed #ddd;
+    margin: 40px 0;
+}
+
+#sidebarCollapse{
+   background-color: rgb(122, 122, 122);
+    color: white;
+}
+
+#sidebar {
+    width: 25%;
+    position: fixed;
+    top: 0;
+    left: -25%;
+    height: 100vh;
+    z-index: 999;
+    background-image: url("https://www.transparenttextures.com/patterns/escheresque.png");    color: #fff;
+    transition: all 0.3s;
+    box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.2);
+}
+
+#sidebar.active {
+    left: 0;
+}
+
+#dismiss {
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    background: transparent;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    -webkit-transition: all 0.3s;
+    -o-transition: all 0.3s;
+    transition: all 0.3s;
+}
+
+#dismiss:hover {
+    background: #fff;
+    color: black;
+}
+
+.username_print{
+    vertical-align: middle;
+    margin-top: 10%;
+    margin-left: 10%;
+}
+
+.overlay {
+    display: none;
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 998;
+    opacity: 0;
+    transition: all 0.5s ease-in-out;
+}
+.overlay.active {
+    display: block;
+    opacity: 1;
+    
+}
+
+#sidebar .sidebar-header {
+    padding: 10%;
+    background: rgba(0, 0, 0, 0.2);
+    color: white;
+
+}
+
+#sidebar ul.components {
+    padding: 20px 0;
+    border-bottom: 1px solid transparent;
+}
+
+#sidebar ul p {
+    color: #fff;
+    padding: 10px;
+}
+
+#sidebar ul li a {
+    padding: 10px;
+    font-size: 1.1em;
+    display: block;
+}
+
+#sidebar ul li a:hover {
+    color: white;
+    background: rgba(0, 0, 0, 0.2);
+}
+
+#sidebar ul li.active>a,
+a[aria-expanded="true"] {
+    color: #fff;
+    background: rgba(0, 0, 0, 0.2);
+}
+
+a[data-toggle="collapse"] {
+    position: relative;
+}
+
+.dropdown-toggle::after {
+    display: block;
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+}
+
+ul ul a {
+    font-size: 0.9em !important;
+    padding-left: 30px !important;
+    background: rgba(0, 0, 0, 0.2);
+}
+
+ul.CTAs {
+    padding: 20px;
+}
+
+ul.CTAs a {
+    text-align: center;
+    font-size: 0.9em !important;
+    display: block;
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
+
+#content {
+    width: 100%;
+    padding: 20px;
+    min-height: 100vh;
+    transition: all 0.3s;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+#nazivPretraga{
+    width: 10%;
+}
+#lokacijaPretraga{
+    width: 5%;
+}
+#cenaOdPretraga{
+    width: 1px;
+}
+
+
+.fa-search {
+    color: Black;
+    font-size: 24px;
+    align-self: center;
+}
+
+.fa-filter {
+    color: Black;
+    font-size: 24px;
+    align-self: center;
+    }
+
+.fa-sort-amount-down{
+    color: Black;
+    font-size: 24px;
+    align-self: center;
+}
+.fa-map-marker-alt{
+    color: Black;
+    font-size: 24px;
+    align-self: center;
+}
+
+#PretragaContainer{
+width: 95%;
+margin: auto;
+}
+#TipSelect{
+width: 100%;
+overflow: hidden;
+-ms-overflow-style: none;  /* IE and Edge */
+scrollbar-width: none;  /* Firefox */
+}
+
+#TipSelectKarte{
+    width: 100%;
+    overflow: hidden;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+    }
+#TipSelectKorisniciAdmin{
+    width: 100%;
+    overflow: hidden;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+    }
+
+
+#TipSelect::-webkit-scrollbar {
+    display: none;
+  }
+  #TipSelectKarte::-webkit-scrollbar {
+    display: none;
+  }
+  #TipSelectKorisniciAdmin::-webkit-scrollbar {
+    display: none;
+  }
+
+#filterButton{
+    width: 100%;
+    padding-right: 10%;
+    padding-left: 10%;
+    color: black;
+    font-size: x-large;
+    margin-bottom: -5%;
+}
+
+#filterButtonKarte{
+    width: 100%;
+    padding-right: 10%;
+    padding-left: 10%;
+    color: black;
+    font-size: x-large;
+    margin-bottom: -5%;
+}
+
+  
+#logo-wp-tickets{
+	position:relative;
+	left: 50%;
+	transform: translate(-50%, 0);
+	transition: 0.5s ease;
+}
+
+#pogodnosti-tabela{
+    width: 90%;
+    margin-left: 5%;
+    align-items: center;
+}
+
+#lokaciijaSelectMapa{
+    width: 25vw;
+    height: 25vh;
+}
+
+#mapaButton{
+    margin-bottom: -2%;
+}
+
+#prazanReturnUpita{
+    margin: auto;
+    font-size: x-large;
+    background-color: whitesmoke;
+    padding: 10px;
+    width: 95%;
+}
+#nemaRezultata
+{
+    margin: auto;
+}
+
+#tabela-karata{
+    width: 95%;
+    padding: 0;
+    margin: auto;
+    text-align: center;
+}
+
+#tabela-karata td{
+    height: 100%;
+    padding: 0;
+    font-size: 20px;
+    border: none;
+    margin-top: 20px;
+}
+#tabela-karata tr{
+    border: none;
+}
+
+td p{
+	
+	margin-top: 10px;
+}
+
+.otkazi{
+    height: 100%;
+    width: 100%;
+    background-color: gray;
+    font-size: 25px;
+    border: none;
+    transition: .5s ease;
+    margin: 0;
+    padding: 10px;
+    color:white;
+}
+
+.otkazi:hover{
+    background-color: rgb(255, 0, 0);
+    cursor: pointer;
+}
+
+.regular{
+    color: rgb(122, 72, 31);
+}
+
+.fan_pit{
+    color: rgb(114, 117, 101);
+}
+
+.vip{
+    color: rgb(224, 203, 106);
+}
+
+.reg-tr{
+    background-color: rgb(179, 172, 156);
+}
+
+.fan-tr{
+    background-color: rgb(241, 240, 238);
+}
+
+.vip-tr{
+    background-color: rgb(248, 250, 158);
+}
+
+.reg-tr:hover{
+    background-color:rgb(189, 189, 189);
+}
+
+.fan-tr:hover{
+    background-color: rgb(189, 189, 189);
+}
+
+.vip-tr:hover{
+    background-color: rgb(189, 189, 189);
+}
+
+.error{
+	font-size:25px;
+	color:red;
+}
+
+.blok{
+    height: 100%;
+    width: 100%;
+    background-color: gray;
+    font-size: 25px;
+    border: none;
+    transition: .5s ease;
+    margin: 0;
+    padding: 10px;
+
+}
+
+.blok:hover{
+    background-color: rgb(241, 207, 95);
+    cursor: pointer;
+}
+
+.odblok{
+    height: 100%;
+    width: 100%;
+    background-color: gray;
+    font-size: 25px;
+    border: none;
+    transition: .5s ease;
+    margin: 0;
+    padding: 10px;
+}
+
+.odblok:hover{
+    background-color: rgb(241, 207, 95);
+    cursor: pointer;
+}
+
+
+.brisi{
+    height: 100%;
+    width: 100%;
+    background-color: gray;
+    font-size: 25px;
+    border: none;
+    transition: .5s ease;
+    margin: 0;
+    padding: 10px;
+}
+
+.brisi:hover{
+    background-color: rgb(248, 74, 74);
+    color:white;
+    cursor: pointer;
+}
+
+#PretragaTabele{
+    width: 90vw;
+    margin: auto;
+    margin-bottom: 5%;
+}

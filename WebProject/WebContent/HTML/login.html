@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Login</title>
+<script src="../JS/jquery-3.3.1.min.js"></script>
+<script src="../JS/login.js"></script>
+<link rel="stylesheet" href="../CSS/login.css">
+</head>
+<body>
+<div id="bg-image"></div>
+    
+    <div id="blok-prijava">
+        <img id="logo" src="../images/login2.png">
+        <h1 id="naslov">Login</h1>
+        <form id="login-form">
+           <input type="username" name="username" placeholder="Username"/>
+            <p class="error" id="username-error" style="color:red" hidden=true>*</p>
+           <input type="password" name="password" placeholder="Password"/><br>
+            <p class="error" id="password-error" style="color: red;" hidden=true>*</p>
+            <input id="login-btn" type="submit" value="Login"><br>
+            <a href="Register.html">Register here</a>
+        </form>
+        
+        <p class="error" id="error" style="color: red;" hidden=true>Invalid username or password!</p>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Register</title>
+<script src="../JS/jquery-3.3.1.min.js"></script>
+<script src="../JS/Register.js"></script>
+<link rel="stylesheet" href="../CSS/Register.css">
+</head>
+<body>
+<div id="bg-image"></div>
+    <div id="blok-registracija">
+        <img id="logo" src="../images/login2.png" height="100px" width="100px">
+        <h1 id='title'>Register</h1>
+        <form id="registration-form">
+      
+            <table>
+                <tr><td><input type="input1" name="username" placeholder="Username"/></td><td><input type="input1" name="password" placeholder="Password"/></td></tr>
+                <tr><td><input type="input1" name="firstName" placeholder="First name"/></td><td><input type="input1" name="lastName" placeholder="Last name"/></td></tr>
+                <tr><td><label class="text-labela">Gender</label><select name="gender"><option value="MALE">Male</option><option value="FEMALE">Female</option></select></td><td><label id="date">Date of birth</label><input type="date" name="dateOfBirth"/></td></tr>
+            </table>
+                <input type="submit" value="Register">
+            
+        </form>
+        <p id="error" style="color:red" hidden=true>Username is already taken</p>
+    </div>
+</body>
+</html>

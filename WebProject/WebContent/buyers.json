@@ -1,0 +1,15 @@
+[
+	{
+		"username": "kupac1",
+		"password": "kupac1",
+		"firstName" : "Kupa",
+		"lastName": "Kupic",
+		"gender": "MALE",
+		"dateOfBirth": "1999-05-05",
+		"role": "BUYER",
+		"deleted": false,
+		"tickets": [],
+		"points": 100,
+		"userType": "BRONZE"
+	}
+]
