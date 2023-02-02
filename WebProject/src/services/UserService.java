@@ -14,8 +14,6 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.*;
 
 import enums.Role;
-import enums.UserTypeName;
-import models.Buyer;
 import models.User;
 
 public class UserService {
@@ -45,7 +43,7 @@ public class UserService {
 		path = filePath + File.separator;
 
 		List<User> admins = null;
-		List<Buyer> buyers = null;
+		List<User> basicusers = null;
 		
 		try {
 			admins = Arrays.asList(mapper.readValue(Paths.get(path + "admins.json").toFile(), User[].class));
@@ -65,24 +63,24 @@ public class UserService {
 			allUsers.add(u);
 		}
 		
-//		try {
-//			buyers = Arrays.asList(mapper.readValue(Paths.get(path + "buyers.json").toFile(), Buyer[].class));
-//			System.out.println("Ucitavanje buyera uspesno===");
-//			System.out.println(path);
-//		} catch (JsonParseException e) {
-//			e.printStackTrace();
-//		} catch (JsonMappingException e) {
-//				e.printStackTrace();
-//		} catch (IOException e) {
-//		e.printStackTrace();
-//		}
-//		
-//		for (User u : buyers) {
-//			if (!u.getDeleted()) {
-//				users.add(u);
-//			}
-//			allUsers.add(u);
-//		}
+		try {
+			basicusers = Arrays.asList(mapper.readValue(Paths.get(path + "users.json").toFile(), User[].class));
+			System.out.println("Ucitavanje korisnika uspesno===");
+			System.out.println(path);
+		} catch (JsonParseException e) {
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+				e.printStackTrace();
+		} catch (IOException e) {
+		e.printStackTrace();
+		}
+		
+		for (User u : basicusers) {
+			if (!u.getDeleted()) {
+				users.add(u);
+			}
+			allUsers.add(u);
+		}
 	}
 	
 	public User getByUsername(String username) {
@@ -124,11 +122,11 @@ public class UserService {
 		return admins;
 	}
 	
-	private ArrayList<Buyer> getAllBuyers() {
-		ArrayList<Buyer> buyers = new ArrayList<Buyer>();
+	private ArrayList<User> getAllBasicUsers() {
+		ArrayList<User> buyers = new ArrayList<User>();
 		for (User u : users) {
 			if (u.getRole() == Role.USERBASIC) {
-				buyers.add((Buyer)u);
+				buyers.add(u);
 			}
 		}
 		return buyers;
@@ -140,13 +138,14 @@ public class UserService {
 		ObjectMapper mapper = new ObjectMapper();
 		if (u.getRole() == Role.USERBASIC) {
 			try {
-				mapper.writeValue(Paths.get(path + "buyers.json").toFile(), getAllBuyers());
+				mapper.writeValue(Paths.get(path + "users.json").toFile(), getAllBasicUsers());
 			} catch (IOException e) {
 				System.out.println("Error! Writing to file was unsuccessful.");
 			}
 		}
 	}
 	
+	//TODO - prosiri da se menjaju i ostale stavke + proveri da li radi ovako
 	public void modifyUser(User u) {
 		User modified = getByUsername(u.getUsername());
 		modified.setFirstName(u.getFirstName());
@@ -156,7 +155,7 @@ public class UserService {
 		ObjectMapper mapper = new ObjectMapper();
 		if (modified.getRole() == Role.USERBASIC) {
 			try {
-				mapper.writeValue(Paths.get(path + "buyers.json").toFile(), getAllBuyers());
+				mapper.writeValue(Paths.get(path + "users.json").toFile(), getAllBasicUsers());
 			} catch (IOException e) {
 				System.out.println("Error! Writing to file was unsuccessful.");
 			}
@@ -176,15 +175,15 @@ public class UserService {
 		}
 
 		if (u.getRole() == Role.USERBASIC) {
-			Buyer buyer = new Buyer(u.getUsername(), u.getPassword(), u.getFirstName(), u.getLastName(), u.getGender(),
-					u.getDateOfBirth(), u.getRole(), u.getDeleted(), new ArrayList<String>(), 0, UserTypeName.BRONZE);
-
+			User basicuser = new User(u.getUsername(), u.getPassword(), u.getEmail(), u.getFirstName(), u.getLastName(), u.getGender(),
+					u.getDateOfBirth(), u.getRole(), u.getUserPrivate(), u.getProfilePicture(), u.getPosts(), u.getPictures(),
+					u.getRequests(), u.getFriends(), u.getDeleted());
 			
-			users.add(buyer);
-			allUsers.add(buyer);
+			users.add(basicuser);
+			allUsers.add(basicuser);
 			ObjectMapper mapper = new ObjectMapper();
 			try {
-				mapper.writeValue(Paths.get(path + "buyers.json").toFile(), getAllBuyers());
+				mapper.writeValue(Paths.get(path + "users.json").toFile(), getAllBasicUsers());
 			} catch (IOException e) {
 				System.out.println("Error while writing!");
 			}
@@ -225,19 +224,20 @@ public class UserService {
 		}
 		
 		if (u.getRole() == Role.USERBASIC) {
-			Buyer buyer = new Buyer(u.getUsername(), u.getPassword(), u.getFirstName(), u.getLastName(), u.getGender(),
-					u.getDateOfBirth(), u.getRole(), u.getDeleted(), new ArrayList<String>(), 0, UserTypeName.BRONZE);
+			User basicUser = new User(u.getUsername(), u.getPassword(), u.getEmail(), u.getFirstName(), u.getLastName(), u.getGender(),
+					u.getDateOfBirth(), u.getRole(), u.getUserPrivate(), u.getProfilePicture(), u.getPosts(), u.getPictures(),
+					u.getRequests(), u.getFriends(), u.getDeleted());
 
-			users.add(buyer);
-			allUsers.add(buyer);
+			users.add(basicUser);
+			allUsers.add(basicUser);
 			ObjectMapper mapper = new ObjectMapper();
 			try {
-				mapper.writeValue(Paths.get(path + "buyers.json").toFile(), getAllBuyers());
+				mapper.writeValue(Paths.get(path + "users.json").toFile(), getAllBasicUsers());
 			} catch (IOException e) {
 				System.out.println("Error while writing!");
 				return null;
 			}
-			return buyer;
+			return basicUser;
 		}
 		return null;
 	}

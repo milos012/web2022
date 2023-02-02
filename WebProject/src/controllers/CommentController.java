@@ -41,22 +41,22 @@ public class CommentController {
 		return userService;
 	}
 	
-	@POST
-	@Path("/add")
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Boolean addComment(Comment kom) {
-		User trenutni = (User) request.getSession().getAttribute("user");
-		if(trenutni == null)
-			return false;
-		
-		if(trenutni.getRole() == Role.USERBASIC) {
-			Buyer k = (Buyer) trenutni;
-			kom.setBuyer(k);
-			getCommentService().addComment(kom);
-			return true;
-		}
-		
-		return false;
-	}
+//	@POST
+//	@Path("/add")
+//	@Consumes(MediaType.APPLICATION_JSON)
+//	public Boolean addComment(Comment kom) {
+//		User trenutni = (User) request.getSession().getAttribute("user");
+//		if(trenutni == null)
+//			return false;
+//		
+//		if(trenutni.getRole() == Role.USERBASIC) {
+//			Buyer k = (Buyer) trenutni;
+//			//kom.setBuyer(k);
+//			getCommentService().addComment(kom);
+//			return true;
+//		}
+//		
+//		return false;
+//	}
 
 }

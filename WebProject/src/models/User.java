@@ -1,6 +1,8 @@
 package models;
 
 import java.time.LocalDate;
+import java.util.List;
+
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import services.LocalDateSerializer;
@@ -21,35 +23,45 @@ public class User {
 	@JsonSerialize(using = LocalDateSerializer.class)
 	private LocalDate dateOfBirth;
 	private Role role;
-	private String profilePicture;
-	//dodaj listu objava, listu slika, listu zahteva za prijateljstvo, listu prijatelja,bool privatan nalog
+	private Boolean userPrivate; //true = privatan nalog, false = javni
+	private String profilePicture;	//TODO: mozda treba i komentar?
+	private List<Post> posts;
+	private List<Picture> pictures;
+	private List<FriendRequest> requests;
+	private List<User> friends;
+	private Boolean deleted;
 	
-	
+	public User() {
+		super();
+	}
+
+	public User(String username, String password, String email, String firstName, String lastName, Gender gender,
+			LocalDate dateOfBirth, Role role, boolean userPrivate, String profilePicture, List<Post> posts,
+			List<Picture> pictures, List<FriendRequest> requests, List<User> friends, Boolean deleted) {
+		super();
+		this.username = username;
+		this.password = password;
+		this.email = email;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.gender = gender;
+		this.dateOfBirth = dateOfBirth;
+		this.role = role;
+		this.userPrivate = userPrivate;
+		this.profilePicture = profilePicture;
+		this.posts = posts;
+		this.pictures = pictures;
+		this.requests = requests;
+		this.friends = friends;
+		this.deleted = deleted;
+	}
+
 	public String getEmail() {
 		return email;
 	}
 
 	public void setEmail(String email) {
 		this.email = email;
-	}
-
-	private Boolean deleted;
-	
-	public User(String username, String password, String firstName, String lastName, Gender gender,
-			LocalDate dateOfBirth, Role role, Boolean deleted) {
-		super();
-		this.username = username;
-		this.password = password;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.gender = gender;
-		this.dateOfBirth = dateOfBirth;
-		this.role = role;
-		this.deleted = deleted;
-	}
-	
-	public User() {
-		super();
 	}
 
 	public String getUsername() {
@@ -114,6 +126,54 @@ public class User {
 
 	public void setDeleted(Boolean deleted) {
 		this.deleted = deleted;
+	}
+
+	public Boolean getUserPrivate() {
+		return userPrivate;
+	}
+
+	public void setUserPrivate(Boolean userPrivate) {
+		this.userPrivate = userPrivate;
+	}
+
+	public String getProfilePicture() {
+		return profilePicture;
+	}
+
+	public void setProfilePicture(String profilePicture) {
+		this.profilePicture = profilePicture;
+	}
+
+	public List<Post> getPosts() {
+		return posts;
+	}
+
+	public void setPosts(List<Post> posts) {
+		this.posts = posts;
+	}
+
+	public List<Picture> getPictures() {
+		return pictures;
+	}
+
+	public void setPictures(List<Picture> pictures) {
+		this.pictures = pictures;
+	}
+
+	public List<FriendRequest> getRequests() {
+		return requests;
+	}
+
+	public void setRequests(List<FriendRequest> requests) {
+		this.requests = requests;
+	}
+
+	public List<User> getFriends() {
+		return friends;
+	}
+
+	public void setFriends(List<User> friends) {
+		this.friends = friends;
 	}
 
 	@Override
