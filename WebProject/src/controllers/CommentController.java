@@ -49,7 +49,7 @@ public class CommentController {
 		if(trenutni == null)
 			return false;
 		
-		if(trenutni.getRole() == Role.BUYER) {
+		if(trenutni.getRole() == Role.USERBASIC) {
 			Buyer k = (Buyer) trenutni;
 			kom.setBuyer(k);
 			getCommentService().addComment(kom);

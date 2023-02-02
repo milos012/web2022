@@ -97,6 +97,7 @@ public class UserController {
 		}
 	}
 	
+	// TODO dodati i promenu profilne slike
 	@GET
 	@Path("/edit")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -131,7 +132,7 @@ public class UserController {
 			if(trenutni.getRole() == Role.ADMIN) {
 				request.getSession().setAttribute("KorisniciIspis", getUserService().getAllUsers());
 				return getUserService().getAllUsers();
-			}else if(trenutni.getRole() == Role.SELLER) {
+			}else if(trenutni.getRole() == Role.USERBASIC) {
 				//TODO
 				return null;
 			}
@@ -140,6 +141,7 @@ public class UserController {
 		return null;
 	}
 	
+	// TODO proveri = nije menjano naknadno
 	@POST
 	@Path("/search")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -221,12 +223,6 @@ public class UserController {
 			break;
 		case 6:
 			result = userService.sortByUsername(result, true);
-			break;
-		case 7:
-			result = userService.sortByPoints(result, false);
-			break;
-		case 8:
-			result = userService.sortByPoints(result, true);
 			break;
 		default:
 			result = new ArrayList<User>();

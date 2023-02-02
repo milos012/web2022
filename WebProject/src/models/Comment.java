@@ -2,16 +2,16 @@ package models;
 
 public class Comment {
     private Buyer buyer;
-    private Manifestation manifestation;
+    private Post post;
     private String commentText;
     private int rating;
 
     public Comment() {
     }
 
-    public Comment(Buyer buyer, Manifestation manifestation, String commentText, int rating) {
+    public Comment(Buyer buyer, Post post, String commentText, int rating) {
         this.buyer = buyer;
-        this.manifestation = manifestation;
+        this.post = post;
         this.commentText = commentText;
         this.rating = rating;
     }
@@ -24,15 +24,15 @@ public class Comment {
         this.buyer = buyer;
     }
 
-    public Manifestation getManifestation() {
-        return manifestation;
-    }
+    public Post getPost() {
+		return post;
+	}
 
-    public void setManifestation(Manifestation manifestation) {
-        this.manifestation = manifestation;
-    }
+	public void setPost(Post post) {
+		this.post = post;
+	}
 
-    public String getCommentText() {
+	public String getCommentText() {
         return commentText;
     }
 

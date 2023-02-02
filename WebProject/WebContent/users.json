@@ -1,0 +1,12 @@
+[
+	{
+		"username": "basic1",
+		"password": "basic1",
+		"firstName" : "Prvko",
+		"lastName": "Prvic",
+		"gender": "MALE",
+		"dateOfBirth": "1999-05-05",
+		"role": "USERBASIC",
+		"deleted": false
+	}
+]

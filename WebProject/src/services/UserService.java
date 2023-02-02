@@ -14,18 +14,15 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.*;
 
 import enums.Role;
-import enums.TicketType;
 import enums.UserTypeName;
 import models.Buyer;
-import models.Seller;
-import models.Ticket;
 import models.User;
 
 public class UserService {
 	private ArrayList<User> users;
 	private String path;
 	private ArrayList<User> allUsers;
-	private Comparator<User> sorterPoints, sorterFName, sorterLName, sorterUsername;
+	private Comparator<User> sorterFName, sorterLName, sorterUsername;
 	
 	public Collection<User> getAllUsers() {
 		return users;
@@ -68,41 +65,24 @@ public class UserService {
 			allUsers.add(u);
 		}
 		
-		try {
-			buyers = Arrays.asList(mapper.readValue(Paths.get(path + "buyers.json").toFile(), Buyer[].class));
-			System.out.println("Ucitavanje buyera uspesno===");
-			System.out.println(path);
-		} catch (JsonParseException e) {
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-				e.printStackTrace();
-		} catch (IOException e) {
-		e.printStackTrace();
-		}
-		
-		for (User u : buyers) {
-			if (!u.getDeleted()) {
-				users.add(u);
-			}
-			allUsers.add(u);
-		}
-		
-		
-		try {
-			List<Seller> sellers = Arrays.asList(mapper.readValue(Paths.get(path + "sellers.json").toFile(), Seller[].class));
-			System.out.println("Ucitavanje sellera uspesno===");
-			for (Seller s : sellers) {
-				if (!s.getDeleted()) {
-					users.add(s);
-				}
-				allUsers.add(s);
-			}
-		}
-		catch (Exception e) {
-			System.out.println("Error while loading");
-			System.out.println(path);
-		}
-
+//		try {
+//			buyers = Arrays.asList(mapper.readValue(Paths.get(path + "buyers.json").toFile(), Buyer[].class));
+//			System.out.println("Ucitavanje buyera uspesno===");
+//			System.out.println(path);
+//		} catch (JsonParseException e) {
+//			e.printStackTrace();
+//		} catch (JsonMappingException e) {
+//				e.printStackTrace();
+//		} catch (IOException e) {
+//		e.printStackTrace();
+//		}
+//		
+//		for (User u : buyers) {
+//			if (!u.getDeleted()) {
+//				users.add(u);
+//			}
+//			allUsers.add(u);
+//		}
 	}
 	
 	public User getByUsername(String username) {
@@ -147,37 +127,20 @@ public class UserService {
 	private ArrayList<Buyer> getAllBuyers() {
 		ArrayList<Buyer> buyers = new ArrayList<Buyer>();
 		for (User u : users) {
-			if (u.getRole() == Role.BUYER) {
+			if (u.getRole() == Role.USERBASIC) {
 				buyers.add((Buyer)u);
 			}
 		}
 		return buyers;
 	}
 	
-	private ArrayList<Seller> getAllSellers() {
-		ArrayList<Seller> sellers = new ArrayList<Seller>();
-		for (User u : users) {
-			if (u.getRole() == Role.SELLER) {
-				sellers.add((Seller)u);
-			}
-		}
-		return sellers;
-	}
-	
-	
 	public void deleteUser(String username) {
 		User u = getByUsername(username);
 		u.setDeleted(true);
 		ObjectMapper mapper = new ObjectMapper();
-		if (u.getRole() == Role.BUYER) {
+		if (u.getRole() == Role.USERBASIC) {
 			try {
 				mapper.writeValue(Paths.get(path + "buyers.json").toFile(), getAllBuyers());
-			} catch (IOException e) {
-				System.out.println("Error! Writing to file was unsuccessful.");
-			}
-		} else if (u.getRole() == Role.SELLER) {
-			try {
-				mapper.writeValue(Paths.get(path + "sellers.json").toFile(), getAllSellers());
 			} catch (IOException e) {
 				System.out.println("Error! Writing to file was unsuccessful.");
 			}
@@ -189,20 +152,15 @@ public class UserService {
 		modified.setFirstName(u.getFirstName());
 		modified.setLastName(u.getLastName());
 		modified.setPassword(u.getPassword());
+		// promeni profilnu sliku
 		ObjectMapper mapper = new ObjectMapper();
-		if (modified.getRole() == Role.BUYER) {
+		if (modified.getRole() == Role.USERBASIC) {
 			try {
 				mapper.writeValue(Paths.get(path + "buyers.json").toFile(), getAllBuyers());
 			} catch (IOException e) {
 				System.out.println("Error! Writing to file was unsuccessful.");
 			}
-		} else if (modified.getRole() == Role.SELLER) {
-			try {
-				mapper.writeValue(Paths.get(path + "sellers.json").toFile(), getAllSellers());
-			} catch (IOException e) {
-				System.out.println("Error! Writing to file was unsuccessful.");
-			}
-		} else {
+		}  else {
 			try {
 				mapper.writeValue(Paths.get(path + "admins.json").toFile(), getAllAdmins());
 			} catch (IOException e) {
@@ -217,7 +175,7 @@ public class UserService {
 			return;
 		}
 
-		if (u.getRole() == Role.BUYER) {
+		if (u.getRole() == Role.USERBASIC) {
 			Buyer buyer = new Buyer(u.getUsername(), u.getPassword(), u.getFirstName(), u.getLastName(), u.getGender(),
 					u.getDateOfBirth(), u.getRole(), u.getDeleted(), new ArrayList<String>(), 0, UserTypeName.BRONZE);
 
@@ -232,19 +190,19 @@ public class UserService {
 			}
 		}
 
-		else if (u.getRole() == Role.SELLER) {
-			Seller seller = new Seller(u.getUsername(), u.getPassword(), u.getFirstName(), u.getLastName(), u.getGender(),
-					u.getDateOfBirth(), u.getRole(), u.getDeleted(), new ArrayList<>(), new ArrayList<>());
-			
-			users.add(seller);
-			allUsers.add(seller);;
-			ObjectMapper mapper = new ObjectMapper();
-			try {
-				mapper.writeValue(Paths.get(path + "sellers.json").toFile(), getAllSellers());
-			} catch (IOException e) {
-				System.out.println("Error while writing!");
-			}
-		}
+//		else if (u.getRole() == Role.SELLER) {
+//			Seller seller = new Seller(u.getUsername(), u.getPassword(), u.getFirstName(), u.getLastName(), u.getGender(),
+//					u.getDateOfBirth(), u.getRole(), u.getDeleted(), new ArrayList<>(), new ArrayList<>());
+//			
+//			users.add(seller);
+//			allUsers.add(seller);;
+//			ObjectMapper mapper = new ObjectMapper();
+//			try {
+//				mapper.writeValue(Paths.get(path + "sellers.json").toFile(), getAllSellers());
+//			} catch (IOException e) {
+//				System.out.println("Error while writing!");
+//			}
+//		}
 	}
 	
 	public User login(String username, String password) {
@@ -266,8 +224,7 @@ public class UserService {
 			}
 		}
 		
-
-		if (u.getRole() == Role.BUYER) {
+		if (u.getRole() == Role.USERBASIC) {
 			Buyer buyer = new Buyer(u.getUsername(), u.getPassword(), u.getFirstName(), u.getLastName(), u.getGender(),
 					u.getDateOfBirth(), u.getRole(), u.getDeleted(), new ArrayList<String>(), 0, UserTypeName.BRONZE);
 
@@ -281,21 +238,6 @@ public class UserService {
 				return null;
 			}
 			return buyer;
-		}
-		else if (u.getRole() == Role.SELLER) {
-			Seller seller = new Seller(u.getUsername(), u.getPassword(), u.getFirstName(), u.getLastName(), u.getGender(),
-					u.getDateOfBirth(), u.getRole(), u.getDeleted(), new ArrayList<>(), new ArrayList<>());
-			
-			users.add(seller);
-			allUsers.add(seller);
-			ObjectMapper mapper = new ObjectMapper();
-			try {
-				mapper.writeValue(Paths.get(path + "sellers.json").toFile(), getAllSellers());
-			} catch (IOException e) {
-				System.out.println("Error while writing!");
-				return null;
-			}
-			return seller;
 		}
 		return null;
 	}
@@ -325,26 +267,16 @@ public class UserService {
 		return result;
 	}
 	
-	public List<User> sortByPoints(List<User> result, boolean opadajuce) {
-		result.removeIf(k -> k.getRole() != Role.BUYER);
-		Collections.sort(result, sorterPoints);
-		if (opadajuce) {
-			Collections.reverse(result);
-		}
-		return result;
-	}
+//	public List<User> sortByPoints(List<User> result, boolean opadajuce) {
+//		result.removeIf(k -> k.getRole() != Role.BUYER);
+//		Collections.sort(result, sorterPoints);
+//		if (opadajuce) {
+//			Collections.reverse(result);
+//		}
+//		return result;
+//	}
 	
 	private void initSorters() {
-		sorterPoints = new Comparator<User>() {
-
-			@Override
-			public int compare(User o1, User o2) {
-				Buyer k1 = (Buyer) o1;
-				Buyer k2 = (Buyer) o2;
-				return Double.compare(k1.getPoints(), k2.getPoints());
-			}
-
-		};
 
 		sorterFName = new Comparator<User>() {
 
@@ -374,28 +306,14 @@ public class UserService {
 		};
 	}
 	
-	public User getManifestationSeller(String idManifestacije) {
 
-		for (User k : allUsers) {
-			if (k.getRole() == Role.SELLER) {
-				Seller prodavac = (Seller) k;
-				for (int id : prodavac.getManifestations()) {
-					if (id == Integer.parseInt(idManifestacije)) {
-						return prodavac;
-					}
-				}
-			}
-		}
-		return null;
-	}
-
-	public void dodajKarteKupcu(User trenutni, ArrayList<Ticket> newTickets) {
-		Buyer bu = (Buyer) trenutni;
-		for (Ticket k : newTickets)
-			bu.getTickets().add(k.getId());
-
-		modifyUser(bu);
-	}
+//	public void dodajKarteKupcu(User trenutni, ArrayList<Ticket> newTickets) {
+//		Buyer bu = (Buyer) trenutni;
+//		for (Ticket k : newTickets)
+//			bu.getTickets().add(k.getId());
+//
+//		modifyUser(bu);
+//	}
 
 //	public void dodajKarteProdavcu(ArrayList<Ticket> noveKarte) {
 //		Seller p = (Seller) mapaKorisnika.get(noveKarte.get(0).());
@@ -405,77 +323,27 @@ public class UserService {
 //		modifyUser(p);
 //	}
 
-	public void dodajBodove(int broj, double cenaForKupac, User trenutni) {
-
-		Buyer kupac = (Buyer) trenutni;
-		int noviBodovi = broj * (int) cenaForKupac / 1000 * 133;
-		kupac.setPoints(kupac.getPoints() + noviBodovi);
-		checkAndSetTipKupca(kupac);
-	}
-
-	private void checkAndSetTipKupca(Buyer kupac) {
-		double bodovi = kupac.getPoints();
-
-		if (kupac.getUserType() == UserTypeName.GOLD)
-			return;
-		else if (kupac.getUserType() == UserTypeName.SILVER) {
-			if (bodovi > 11000) {
-				kupac.setUserType(UserTypeName.GOLD);
-				kupac.setPoints(0);
-			}
-			return;
-		} else if (kupac.getUserType() == UserTypeName.BRONZE) {
-			if (bodovi > 5000) {
-				kupac.setUserType(UserTypeName.SILVER);
-				kupac.setPoints(0);
-			}
-			return;
-		}
-		return;
-	}
 	
-	public double getCenaForKupac(User trenutni, double cenaRegKarte, int tipKarte) {
-		int koeficijent = 1;
-		//if (tipKarte == TicketType.VIP) {
-		if (tipKarte == 0) {
-			koeficijent = 4;
-		} else if (tipKarte == 2) {
-			koeficijent = 2;
-		}
-
-		float popust = 0;
-		Buyer u = (Buyer) getByUsername(trenutni.getUsername());
-		UserTypeName utn = u.getUserType();
-		if(utn == UserTypeName.SILVER) {
-			popust = 6;
-		}
-		if(utn == UserTypeName.GOLD) {
-			popust = 12;
-		}
-		double cena = koeficijent * cenaRegKarte * (100 - popust) / 100;
-
-		return cena;
-	}
 	
-	public void cancelTicket(Ticket k, User trenutni) {
-		Buyer kupac = (Buyer) trenutni;
-		double bodovi = (double) Math.round(k.getPrice() / 1000 * 133 * 4);
-		kupac.setPoints(kupac.getPoints() - bodovi);
-		if (kupac.getUserType() == UserTypeName.GOLD && kupac.getPoints() < 1) {
-			kupac.setPoints(5500);
-			kupac.setUserType(UserTypeName.SILVER);
-
-		}
-		if (kupac.getUserType() == UserTypeName.SILVER && kupac.getPoints() < 1) {
-			kupac.setPoints(1500);
-			kupac.setUserType(UserTypeName.BRONZE);;
-
-		}
-		if (kupac.getUserType() == UserTypeName.BRONZE && kupac.getPoints() < 1) {
-			kupac.setPoints(0);
-		}
-
-		modifyUser(kupac);
-	}
+//	public void cancelTicket(Ticket k, User trenutni) {
+//		Buyer kupac = (Buyer) trenutni;
+//		double bodovi = (double) Math.round(k.getPrice() / 1000 * 133 * 4);
+//		kupac.setPoints(kupac.getPoints() - bodovi);
+//		if (kupac.getUserType() == UserTypeName.GOLD && kupac.getPoints() < 1) {
+//			kupac.setPoints(5500);
+//			kupac.setUserType(UserTypeName.SILVER);
+//
+//		}
+//		if (kupac.getUserType() == UserTypeName.SILVER && kupac.getPoints() < 1) {
+//			kupac.setPoints(1500);
+//			kupac.setUserType(UserTypeName.BRONZE);;
+//
+//		}
+//		if (kupac.getUserType() == UserTypeName.BRONZE && kupac.getPoints() < 1) {
+//			kupac.setPoints(0);
+//		}
+//
+//		modifyUser(kupac);
+//	}
 	
 }

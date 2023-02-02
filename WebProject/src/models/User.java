@@ -13,6 +13,7 @@ public class User {
 	
 	private String username;
 	private String password;
+	private String email;
 	private String firstName;
 	private String lastName;
 	private Gender gender;
@@ -20,6 +21,18 @@ public class User {
 	@JsonSerialize(using = LocalDateSerializer.class)
 	private LocalDate dateOfBirth;
 	private Role role;
+	private String profilePicture;
+	//dodaj listu objava, listu slika, listu zahteva za prijateljstvo, listu prijatelja,bool privatan nalog
+	
+	
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 	private Boolean deleted;
 	
 	public User(String username, String password, String firstName, String lastName, Gender gender,
@@ -105,7 +118,7 @@ public class User {
 
 	@Override
 	public String toString() {
-		return  username + "," + password + "," + firstName + "," + lastName + "," + gender + "," + dateOfBirth + "," + role + "," + deleted;
+		return  username + "," + password + "," + email + "," + firstName + "," + lastName + "," + gender + "," + dateOfBirth + "," + role + "," + deleted;
 	}
 
 	
