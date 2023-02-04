@@ -5,6 +5,8 @@ $(document).ready(function(){
         var password = $("input[name='password']").val();
         var firstName = $("input[name='firstName']").val();
         var lastName = $("input[name='lastName']").val();
+        var accStatus = $("select[name='accStatus'] option:selected").val();
+        var email = $("input[name='email']").val();
         var gender = $("select[name='gender'] option:selected").val();
         var dateOfBirth = $("input[name='dateOfBirth']").val();
        
@@ -39,7 +41,7 @@ $(document).ready(function(){
             $.post({
 			url: "/WebProject/rest/users/register",
 			contentType: 'application/json',
-			data: JSON.stringify({"username": username, "password":password, "firstName": firstName, "lastName":lastName, "gender":gender, "dateOfBirth":dateOfBirth, "role":"BUYER", "deleted": false}),
+			data: JSON.stringify({"username": username, "password":password, "firstName": firstName, "lastName":lastName, "accStatus":accStatus, "email":email, "gender":gender, "dateOfBirth":dateOfBirth, "role":"USERBASIC", "deleted": false}),
 			success: function(user){
 				if(user == null){
 					$("#error").show();

@@ -10,6 +10,7 @@ import services.LocalDateDeserializer;
 
 import enums.Gender;
 import enums.Role;
+import enums.UserStatus;
 
 public class User {
 	
@@ -23,7 +24,7 @@ public class User {
 	@JsonSerialize(using = LocalDateSerializer.class)
 	private LocalDate dateOfBirth;
 	private Role role;
-	private Boolean userPrivate; //true = privatan nalog, false = javni
+	private UserStatus accStatus;
 	private String profilePicture;	//TODO: mozda treba i komentar?
 	private List<Post> posts;
 	private List<Picture> pictures;
@@ -36,7 +37,7 @@ public class User {
 	}
 
 	public User(String username, String password, String email, String firstName, String lastName, Gender gender,
-			LocalDate dateOfBirth, Role role, boolean userPrivate, String profilePicture, List<Post> posts,
+			LocalDate dateOfBirth, Role role, UserStatus accStatus, String profilePicture, List<Post> posts,
 			List<Picture> pictures, List<FriendRequest> requests, List<User> friends, Boolean deleted) {
 		super();
 		this.username = username;
@@ -47,12 +48,27 @@ public class User {
 		this.gender = gender;
 		this.dateOfBirth = dateOfBirth;
 		this.role = role;
-		this.userPrivate = userPrivate;
+		this.accStatus = accStatus;
 		this.profilePicture = profilePicture;
 		this.posts = posts;
 		this.pictures = pictures;
 		this.requests = requests;
 		this.friends = friends;
+		this.deleted = deleted;
+	}
+
+	public User(String username, String password, String email, String firstName, String lastName, Gender gender,
+			LocalDate dateOfBirth, Role role, UserStatus accStatus, Boolean deleted) {
+		super();
+		this.username = username;
+		this.password = password;
+		this.email = email;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.gender = gender;
+		this.dateOfBirth = dateOfBirth;
+		this.role = role;
+		this.accStatus = accStatus;
 		this.deleted = deleted;
 	}
 
@@ -128,12 +144,12 @@ public class User {
 		this.deleted = deleted;
 	}
 
-	public Boolean getUserPrivate() {
-		return userPrivate;
+	public UserStatus getAccStatus() {
+		return accStatus;
 	}
 
-	public void setUserPrivate(Boolean userPrivate) {
-		this.userPrivate = userPrivate;
+	public void setAccStatus(UserStatus accStatus) {
+		this.accStatus = accStatus;
 	}
 
 	public String getProfilePicture() {

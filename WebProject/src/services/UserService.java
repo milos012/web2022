@@ -48,6 +48,7 @@ public class UserService {
 		try {
 			admins = Arrays.asList(mapper.readValue(Paths.get(path + "admins.json").toFile(), User[].class));
 			System.out.println("Ucitavanje admina uspesno===");
+			System.out.println("iz +" + path);
 		} catch (JsonParseException e) {
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
@@ -66,6 +67,7 @@ public class UserService {
 		try {
 			basicusers = Arrays.asList(mapper.readValue(Paths.get(path + "users.json").toFile(), User[].class));
 			System.out.println("Ucitavanje korisnika uspesno===");
+			System.out.println("iz +" + path);
 			System.out.println(path);
 		} catch (JsonParseException e) {
 			e.printStackTrace();
@@ -176,7 +178,7 @@ public class UserService {
 
 		if (u.getRole() == Role.USERBASIC) {
 			User basicuser = new User(u.getUsername(), u.getPassword(), u.getEmail(), u.getFirstName(), u.getLastName(), u.getGender(),
-					u.getDateOfBirth(), u.getRole(), u.getUserPrivate(), u.getProfilePicture(), u.getPosts(), u.getPictures(),
+					u.getDateOfBirth(), u.getRole(), u.getAccStatus(), u.getProfilePicture(), u.getPosts(), u.getPictures(),
 					u.getRequests(), u.getFriends(), u.getDeleted());
 			
 			users.add(basicuser);
@@ -224,15 +226,20 @@ public class UserService {
 		}
 		
 		if (u.getRole() == Role.USERBASIC) {
+//			User basicUser = new User(u.getUsername(), u.getPassword(), u.getEmail(), u.getFirstName(), u.getLastName(), u.getGender(),
+//					u.getDateOfBirth(), u.getRole(), u.getAccStatus(), u.getProfilePicture(), u.getPosts(), u.getPictures(),
+//					u.getRequests(), u.getFriends(), u.getDeleted());
+			
 			User basicUser = new User(u.getUsername(), u.getPassword(), u.getEmail(), u.getFirstName(), u.getLastName(), u.getGender(),
-					u.getDateOfBirth(), u.getRole(), u.getUserPrivate(), u.getProfilePicture(), u.getPosts(), u.getPictures(),
-					u.getRequests(), u.getFriends(), u.getDeleted());
+					u.getDateOfBirth(), u.getRole(), u.getAccStatus(), u.getDeleted());
 
 			users.add(basicUser);
 			allUsers.add(basicUser);
 			ObjectMapper mapper = new ObjectMapper();
 			try {
 				mapper.writeValue(Paths.get(path + "users.json").toFile(), getAllBasicUsers());
+				System.out.println("Korisnik je uspesno kreiran");
+				System.out.println("na putanji: + " + path);
 			} catch (IOException e) {
 				System.out.println("Error while writing!");
 				return null;
