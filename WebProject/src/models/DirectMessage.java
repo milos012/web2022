@@ -28,6 +28,14 @@ public class DirectMessage {
 		this.sadrzaj = sadrzaj;
 		this.dateSent = dateSent;
 	}
+	
+	public DirectMessage(DirectMessage dm) {
+		super();
+		this.posiljalac = dm.getPosiljalac();
+		this.primalac = dm.getPrimalac();
+		this.sadrzaj = dm.getSadrzaj();
+		this.dateSent = dm.getDateSent();
+	}
 
 	public User getPosiljalac() {
 		return posiljalac;
