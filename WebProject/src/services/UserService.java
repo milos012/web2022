@@ -171,7 +171,7 @@ public class UserService {
 	}
 	
 	public void addUser(User u) {
-		if (getByUsername(u.getUsername()) == null) {
+		if (getByUsername(u.getUsername()) != null) {
 			System.out.println("User already exists");
 			return;
 		}
@@ -186,6 +186,7 @@ public class UserService {
 			ObjectMapper mapper = new ObjectMapper();
 			try {
 				mapper.writeValue(Paths.get(path + "users.json").toFile(), getAllBasicUsers());
+				System.out.println("user upisan u:" + path);
 			} catch (IOException e) {
 				System.out.println("Error while writing!");
 			}
@@ -274,14 +275,6 @@ public class UserService {
 		return result;
 	}
 	
-//	public List<User> sortByPoints(List<User> result, boolean opadajuce) {
-//		result.removeIf(k -> k.getRole() != Role.BUYER);
-//		Collections.sort(result, sorterPoints);
-//		if (opadajuce) {
-//			Collections.reverse(result);
-//		}
-//		return result;
-//	}
 	
 	private void initSorters() {
 
@@ -314,23 +307,6 @@ public class UserService {
 	}
 	
 
-//	public void dodajKarteKupcu(User trenutni, ArrayList<Ticket> newTickets) {
-//		Buyer bu = (Buyer) trenutni;
-//		for (Ticket k : newTickets)
-//			bu.getTickets().add(k.getId());
-//
-//		modifyUser(bu);
-//	}
-
-//	public void dodajKarteProdavcu(ArrayList<Ticket> noveKarte) {
-//		Seller p = (Seller) mapaKorisnika.get(noveKarte.get(0).());
-//		for (Ticket k : noveKarte)
-//			p.getTickets().add(k.getId());
-//
-//		modifyUser(p);
-//	}
-
-	
 	
 //	public void cancelTicket(Ticket k, User trenutni) {
 //		Buyer kupac = (Buyer) trenutni;

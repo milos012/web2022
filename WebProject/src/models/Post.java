@@ -7,7 +7,48 @@ public class Post {
 	private String slika;
 	private String tekst;
 	private List<Comment> komentari;
+	private Boolean deleted;
 	
+	
+	public Post(Post np) {
+		this.slika = np.getSlika();
+		this.tekst = np.getTekst();
+		this.komentari = np.getKomentari();
+		this.deleted = np.getDeleted();
+	}
+	
+	public Post(String slika, String tekst, List<Comment> komentari, Boolean deleted) {
+		super();
+		this.slika = slika;
+		this.tekst = tekst;
+		this.komentari = komentari;
+		this.deleted = deleted;
+	}
+
+	public Post(String slika, String tekst) {
+		super();
+		this.slika = slika;
+		this.tekst = tekst;
+	}
+
+	public Post() {
+		super();
+	}
+
+	public Post(String slika, String tekst, Boolean deleted) {
+		super();
+		this.slika = slika;
+		this.tekst = tekst;
+		this.deleted = deleted;
+	}
+	
+
+	public Post(String tekst, Boolean deleted) {
+		super();
+		this.tekst = tekst;
+		this.deleted = deleted;
+	}
+
 	public String getSlika()
 	{
 		return slika;
@@ -30,6 +71,14 @@ public class Post {
 	public void setTekst(String tekst)
 	{
 		this.tekst = tekst;
+	}
+
+	public Boolean getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
 	}
 
 	@Override
