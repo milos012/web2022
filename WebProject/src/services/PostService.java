@@ -24,6 +24,16 @@ public class PostService {
 	public PostService() {
 		super();
 	}
+	
+	
+
+	public PostService(ArrayList<Post> posts, String path, ArrayList<Post> allPosts) {
+		super();
+		this.posts = posts;
+		this.path = path;
+		this.allPosts = allPosts;
+	}
+
 
 	public PostService(ArrayList<Post> posts, String path, ArrayList<Post> allPosts, Comparator<Post> sorterDate) {
 		super();
@@ -52,7 +62,11 @@ public class PostService {
             System.out.println("Ucitavanje karata uspesno===");
 
             for (Post t : postList) {
-                posts.add(t);
+            	
+            	if (!t.getDeleted()) {
+            		posts.add(t);
+    			}
+            	allPosts.add(t);
             }
 
         } catch (IOException e) {

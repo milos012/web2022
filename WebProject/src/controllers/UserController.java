@@ -31,6 +31,8 @@ public class UserController {
 	@Context
 	HttpServletRequest request;
 	
+	
+	//TODO: promeniti putanju?
 	private UserService getUserService() {
 		UserService userService = (UserService) ctx.getAttribute("UserService");
 		if (userService == null) {

@@ -9,7 +9,6 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 import enums.Role;
-import models.Buyer;
 import models.Comment;
 import models.User;
 import services.CommentService;
@@ -23,6 +22,8 @@ public class CommentController {
 	@Context
 	HttpServletRequest request;
 	
+	
+	//TODO: promeniti putanju?
 	private CommentService getCommentService() {
 		CommentService commentService = (CommentService) ctx.getAttribute("CommentService");	
 		if (commentService == null) {

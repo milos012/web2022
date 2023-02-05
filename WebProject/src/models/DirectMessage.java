@@ -5,77 +5,68 @@ import java.time.LocalDate;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-import enums.RequestStatus;
 import services.LocalDateDeserializer;
 import services.LocalDateSerializer;
 
-public class FriendRequest {
-	
+public class DirectMessage {
 	private User posiljalac;
 	private User primalac;
-	private RequestStatus status;
+	private String sadrzaj;
 	@JsonDeserialize(using = LocalDateDeserializer.class)
 	@JsonSerialize(using = LocalDateSerializer.class)
 	private LocalDate dateSent;
 	
 	
-	public FriendRequest() {
+	public DirectMessage() {
 		super();
 	}
-	
-	public FriendRequest(User posiljalac, User primalac, RequestStatus status, LocalDate dateSent) {
+
+	public DirectMessage(User posiljalac, User primalac, String sadrzaj, LocalDate dateSent) {
 		super();
 		this.posiljalac = posiljalac;
 		this.primalac = primalac;
-		this.status = status;
+		this.sadrzaj = sadrzaj;
 		this.dateSent = dateSent;
 	}
-	
-	public FriendRequest(FriendRequest fr) {
-		this.posiljalac = fr.getPosiljalac();
-		this.primalac = fr.getPrimalac();
-		this.status = fr.getStatus();
-		this.dateSent = fr.getDateSent();
-	}
-	
+
 	public User getPosiljalac() {
 		return posiljalac;
 	}
-	
+
 	public void setPosiljalac(User posiljalac) {
 		this.posiljalac = posiljalac;
 	}
-	
+
 	public User getPrimalac() {
 		return primalac;
 	}
-	
+
 	public void setPrimalac(User primalac) {
 		this.primalac = primalac;
 	}
-	
-	public RequestStatus getStatus() {
-		return status;
+
+	public String getSadrzaj() {
+		return sadrzaj;
 	}
-	
-	public void setStatus(RequestStatus status) {
-		this.status = status;
+
+	public void setSadrzaj(String sadrzaj) {
+		this.sadrzaj = sadrzaj;
 	}
-	
+
 	public LocalDate getDateSent() {
 		return dateSent;
 	}
-	
+
 	public void setDateSent(LocalDate dateSent) {
 		this.dateSent = dateSent;
 	}
-	
+
 	@Override
 	public String toString() {
-		return "FriendRequest [posiljalac=" + posiljalac + ", primalac=" + primalac + ", status=" + status
+		return "DirectMessage [posiljalac=" + posiljalac + ", primalac=" + primalac + ", sadrzaj=" + sadrzaj
 				+ ", dateSent=" + dateSent + "]";
 	}
 	
 	
-
+	
 }

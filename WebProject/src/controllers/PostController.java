@@ -38,7 +38,7 @@ public class PostController {
 	@Path("/create")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Post register(Post k) {
+	public Post createPost(Post k) {
 		Post trenutni = (Post) request.getSession().getAttribute("post");
 		if(trenutni == null) {
 			Post novipost = getPostService().addPost(k);

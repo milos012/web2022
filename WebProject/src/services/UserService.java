@@ -68,7 +68,6 @@ public class UserService {
 			basicusers = Arrays.asList(mapper.readValue(Paths.get(path + "users.json").toFile(), User[].class));
 			System.out.println("Ucitavanje korisnika uspesno===");
 			System.out.println("iz +" + path);
-			System.out.println(path);
 		} catch (JsonParseException e) {
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
