@@ -8,9 +8,11 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.nio.file.Paths;
 
 import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.*;
 
 import enums.Role;
@@ -133,6 +135,23 @@ public class UserService {
 		return buyers;
 	}
 	
+	public ArrayList<User> getAllUsersFromFiles() {
+		ArrayList<User> all = new ArrayList<User>();
+		ObjectMapper mapper = new ObjectMapper();
+		
+		try {
+			List<User> basicusers = Arrays.asList(mapper.readValue(Paths.get(path + "users.json").toFile(), User[].class));
+			List<User> admins = Arrays.asList(mapper.readValue(Paths.get(path + "admins.json").toFile(), User[].class));
+			all.addAll(basicusers);
+			all.addAll(admins);
+		} catch (Exception e) {
+			System.out.println(e.getStackTrace());
+			return null;
+		}
+		
+		return all;
+	}
+	
 	public void deleteUser(String username) {
 		User u = getByUsername(username);
 		u.setDeleted(true);
@@ -208,10 +227,8 @@ public class UserService {
 	
 	public User login(String username, String password) {
 		for (User u : users) {
-			if (u.getUsername().equals(username)){
-				if(u.getPassword().equals(password) && u.getDeleted() == false) {
-					return u;
-				}
+			if (u.getUsername().equals(username) && u.getPassword().equals(password) && !u.getDeleted()){
+				return u;
 			}
 		}
 		return null;
@@ -304,6 +321,68 @@ public class UserService {
 
 		};
 	}
+
+
+	public boolean changeBlockStatus(String username) {
+		boolean changed = false;
+		ObjectMapper mapper = new ObjectMapper();
+		ObjectWriter writer = mapper.writer(new DefaultPrettyPrinter());
+		
+		List<User> users = null;
+		try {
+			users = Arrays.asList(mapper.readValue(Paths.get(path + "admins.json").toFile(), User[].class));
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		
+		for (User u: users) {
+			if (Objects.equals(u.getUsername(), username)) {
+				u.setDeleted(!u.getDeleted());
+				changed = true;
+			}
+		}
+		
+		if (changed) {
+			try {
+				writer.writeValue(Paths.get(path + "admins.json").toFile(), users);
+				loadUsers(path);
+				return true;
+			} catch (IOException e) {
+				System.out.println("Error while writing!");
+				return false;
+			}
+		}
+		
+		try {
+			users = Arrays.asList(mapper.readValue(Paths.get(path + "users.json").toFile(), User[].class));
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		for (User u: users) {
+			if (Objects.equals(u.getUsername(), username)) {
+				u.setDeleted(!u.getDeleted());
+				changed = true;
+			}
+		}
+		
+		if (changed) {
+			try {
+				writer.writeValue(Paths.get(path + "users.json").toFile(), users);
+				loadUsers(path);
+				return true;
+			} catch (IOException e) {
+				System.out.println("Error while writing!");
+				return false;
+			}
+		}
+		
+		return false;
+	}
+	
 	
 
 	

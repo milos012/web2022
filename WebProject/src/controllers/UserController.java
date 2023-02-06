@@ -3,12 +3,15 @@ package controllers;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -22,6 +25,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -44,7 +48,7 @@ public class UserController {
 	private UserService getUserService() {
 		UserService userService = (UserService) ctx.getAttribute("UserService");
 		if (userService == null) {
-			userService = new UserService(ctx.getRealPath("."));
+			userService = new UserService("D:\\Users\\HpZbook15\\Desktop\\web2022\\WebProject\\WebContent/");
 			ctx.setAttribute("UserService", userService);
 		}
 		return userService;
@@ -54,7 +58,7 @@ public class UserController {
 	@Path("/login")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public User login() throws IOException {
+	public Response login() throws IOException {
 		LoginDTO login = null;
 		try {
 			ServletInputStream reader = request.getInputStream();
@@ -64,24 +68,28 @@ public class UserController {
 			ObjectMapper mapper = new ObjectMapper();
 			login = mapper.readValue(str, LoginDTO.class);
 	    } catch (Exception e) { 
-	    	return null;
+	    	return Response.status(Status.BAD_REQUEST).entity(e.getMessage()).build();
 	    }
 
 		User user = getUserService().login(login.getUsername(), login.getPassword());
 		
 		if(user != null) {
 			request.getSession().setAttribute("user", user);
+			return Response.status(Status.OK).entity(user).build();
 		}
 		
-		return user;
+		return Response.status(Status.BAD_REQUEST).entity("user not found!").build();
 	}
 	
 	@GET
 	@Path("/logout")
-	public void logout() {
+	public Response logout() {
 		User u = (User)request.getSession().getAttribute("user");
-		if(u != null)
+		if(u != null) {
 			request.getSession().setAttribute("user", null);
+			return Response.status(Status.OK).build();
+		}
+		return Response.status(Status.BAD_REQUEST).build();
 	}
 	
 	@POST
@@ -111,12 +119,13 @@ public class UserController {
 	@GET
 	@Path("/user")
 	@Produces(MediaType.APPLICATION_JSON)
-	public User activeUser() {
+	public Response activeUser() {
 		try {
 			User user = (User)request.getSession().getAttribute("user");
-			return user;
+			return Response.status(Status.OK).entity(user).build();
 		} catch(Exception e){
-			return null;
+			return Response.status(Status.BAD_REQUEST).entity(e.getMessage()).build();
+			
 		}
 	}
 	
@@ -137,31 +146,56 @@ public class UserController {
 		return null;
 	}
 	
-	@GET
-	@Path("/delete")
-	public void deleteUser(@QueryParam("username") String username ) {
+	@PUT
+	@Path("/block/{username}")
+	public Response blockUser(@PathParam("username") String username ) {
 		User trenutni = (User)request.getSession().getAttribute("user");
-		if(trenutni != null && trenutni.equals(getUserService().getByUsername(trenutni.getUsername())) && trenutni.getRole() == Role.ADMIN) {
-			getUserService().deleteUser(username);
+		if(trenutni != null && trenutni.equals(getUserService().getByUsername(trenutni.getUsername()))) {
+			if (trenutni.getRole() == Role.ADMIN) {
+				return Response.status(Status.OK).entity(getUserService().changeBlockStatus(username)).build();
+			} else {
+				return Response.status(Status.UNAUTHORIZED).build();
+			}
+			
 		}
+		return Response.status(Status.BAD_REQUEST).build();
 	}
+	
+	
 	
 	@GET
 	@Path("/all")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Collection<User> getAll(){
+	public Response getAll(){
 		User trenutni = (User)request.getSession().getAttribute("user");
 		if(trenutni != null && trenutni.equals(getUserService().getByUsername(trenutni.getUsername()))) {
 			if(trenutni.getRole() == Role.ADMIN) {
-				request.getSession().setAttribute("KorisniciIspis", getUserService().getAllUsers());
-				return getUserService().getAllUsers();
-			}else if(trenutni.getRole() == Role.USERBASIC) {
+//				request.getSession().setAttribute("KorisniciIspis", getUserService().getAllUsers());
+				return Response.status(Status.OK).entity(getUserService().getAllUsers()).build();
+			}else if (trenutni.getRole() == Role.USERBASIC) {
 				//TODO
-				return null;
+				return Response.status(Status.UNAUTHORIZED).build();
 			}
 		}
-		
-		return null;
+		return Response.status(Status.BAD_REQUEST).build();
+	}
+	
+	@GET
+	@Path("/adminAll")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getAllForAdmin(){
+		User trenutni = (User)request.getSession().getAttribute("user");
+		if(trenutni != null && trenutni.equals(getUserService().getByUsername(trenutni.getUsername()))) {
+			if(trenutni.getRole() == Role.ADMIN) {
+//				request.getSession().setAttribute("KorisniciIspis", getUserService().getAllUsers());
+				
+				return Response.status(Status.OK).entity(getUserService().getAllUsersFromFiles()).build();
+			}else if(trenutni.getRole() == Role.USERBASIC) {
+				//TODO
+				return Response.status(Status.UNAUTHORIZED).build();
+			}
+		}
+		return Response.status(Status.BAD_REQUEST).build();
 	}
 	
 	// TODO proveri = nije menjano naknadno

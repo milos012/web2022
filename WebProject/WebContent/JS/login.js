@@ -16,14 +16,20 @@ $(document).ready(function(){
 			url: "/WebProject/rest/users/login",
 			contentType: 'application/json',
 			data: JSON.stringify({"username": username, "password":password}),
-			success: function(user, status, xhr){
-				if(user == null){
+			success: function(user, status){
+				if(status != 200){
 					$("#error").show();
 				}else{
-					console.log(xhr, user);
-					
+//					console.log(user);
+					sessionStorage.setItem("user-role", user.role);
+					if (user.role == 'ADMIN') {
+						window.location.replace('/WebProject/HTML/admin/adminHomePage.html');
+					} else if (user.role == 'BASICUSER') {
+						window.location.replace('/WebProject/HTML/home.html');
+					}
 				}
 			}
+			
 		});
         }
             
