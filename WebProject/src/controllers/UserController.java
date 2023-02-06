@@ -10,27 +10,35 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import dtos.LoginDTO;
 import enums.Role;
 import models.User;
 import services.UserService;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 
 import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @Path("/users")
 public class UserController {
 	
 	@Context
-	ServletContext ctx;
+	private ServletContext ctx;
 	
 	@Context
-	HttpServletRequest request;
-	
+	private HttpServletRequest request;
 	
 	//TODO: promeniti putanju?
 	private UserService getUserService() {
@@ -42,11 +50,24 @@ public class UserController {
 		return userService;
 	}
 	
-	@GET
+	@POST
 	@Path("/login")
 	@Produces(MediaType.APPLICATION_JSON)
-	public User login(@QueryParam("username") String username, @QueryParam("password") String password) {
-		User user = getUserService().login(username, password);
+	@Consumes(MediaType.APPLICATION_JSON)
+	public User login() throws IOException {
+		LoginDTO login = null;
+		try {
+			ServletInputStream reader = request.getInputStream();
+			byte[] all = reader.readAllBytes();
+			String str = new String(all, StandardCharsets.UTF_8);
+
+			ObjectMapper mapper = new ObjectMapper();
+			login = mapper.readValue(str, LoginDTO.class);
+	    } catch (Exception e) { 
+	    	return null;
+	    }
+
+		User user = getUserService().login(login.getUsername(), login.getPassword());
 		
 		if(user != null) {
 			request.getSession().setAttribute("user", user);
@@ -126,7 +147,7 @@ public class UserController {
 	}
 	
 	@GET
-	@Path("/")
+	@Path("/all")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Collection<User> getAll(){
 		User trenutni = (User)request.getSession().getAttribute("user");

@@ -3,6 +3,7 @@ $(document).ready(function(){
         e.preventDefault();
         var username = $("input[name='username']").val();
         var password = $("input[name='password']").val();
+		//console.log(username, password);
         if(!username){
             $("input[name='username']").css("border-bottom", "2px solid red")
         } 
@@ -11,18 +12,19 @@ $(document).ready(function(){
             $("input[name='password']").css("border-bottom", "2px solid red")
         }
         if(username && password){
-            $.get({
+            $.post({
 			url: "/WebProject/rest/users/login",
 			contentType: 'application/json',
-			data: {"username": username, "password":password},
-			success: function(user){
+			data: JSON.stringify({"username": username, "password":password}),
+			success: function(user, status, xhr){
 				if(user == null){
 					$("#error").show();
 				}else{
-					window.location.href = "../HTML/home.html";
+					console.log(xhr, user);
+					
 				}
 			}
-		})
+		});
         }
             
     });
