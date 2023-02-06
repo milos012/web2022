@@ -38,7 +38,7 @@ public class FriendRequestController {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public FriendRequest createFR(FriendRequest k) {
-		FriendRequest trenutni = (FriendRequest) request.getSession().getAttribute("frq");
+//		FriendRequest trenutni = (FriendRequest) request.getSession().getAttribute("frq");
 //		if(trenutni == null) {
 //			FriendRequest novifr = getFriendRequestService().addFR(k);
 //			
