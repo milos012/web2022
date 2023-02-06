@@ -14,6 +14,8 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.*;
 
 import enums.Role;
+import models.FriendRequest;
+import models.Post;
 import models.User;
 
 public class UserService {
@@ -169,6 +171,28 @@ public class UserService {
 		}
 	}
 	
+	public void addPostToUser(User u, Post np) {
+		for (User user : users) {
+			if (user.getUsername().equals(u.getUsername())) {
+				user.getPosts().add(np);
+			}
+		}
+		ObjectMapper mapper = new ObjectMapper();
+		if (u.getRole() == Role.USERBASIC) {
+			try {
+				mapper.writeValue(Paths.get(path + "users.json").toFile(), getAllBasicUsers());
+			} catch (IOException e) {
+				System.out.println("Error! Writing to file was unsuccessful.");
+			}
+		}  else {
+			try {
+				mapper.writeValue(Paths.get(path + "admins.json").toFile(), getAllAdmins());
+			} catch (IOException e) {
+				System.out.println("Error! Writing to file was unsuccessful.");
+			}
+		}
+	}
+	
 	public void addUser(User u) {
 		if (getByUsername(u.getUsername()) != null) {
 			System.out.println("User already exists");
@@ -190,20 +214,6 @@ public class UserService {
 				System.out.println("Error while writing!");
 			}
 		}
-
-//		else if (u.getRole() == Role.SELLER) {
-//			Seller seller = new Seller(u.getUsername(), u.getPassword(), u.getFirstName(), u.getLastName(), u.getGender(),
-//					u.getDateOfBirth(), u.getRole(), u.getDeleted(), new ArrayList<>(), new ArrayList<>());
-//			
-//			users.add(seller);
-//			allUsers.add(seller);;
-//			ObjectMapper mapper = new ObjectMapper();
-//			try {
-//				mapper.writeValue(Paths.get(path + "sellers.json").toFile(), getAllSellers());
-//			} catch (IOException e) {
-//				System.out.println("Error while writing!");
-//			}
-//		}
 	}
 	
 	public User login(String username, String password) {
@@ -230,8 +240,7 @@ public class UserService {
 //					u.getDateOfBirth(), u.getRole(), u.getAccStatus(), u.getProfilePicture(), u.getPosts(), u.getPictures(),
 //					u.getRequests(), u.getFriends(), u.getDeleted());
 			
-			User basicUser = new User(u.getUsername(), u.getPassword(), u.getEmail(), u.getFirstName(), u.getLastName(), u.getGender(),
-					u.getDateOfBirth(), u.getRole(), u.getAccStatus(), u.getDeleted());
+			User basicUser = new User(u);
 
 			users.add(basicUser);
 			allUsers.add(basicUser);
@@ -305,27 +314,5 @@ public class UserService {
 		};
 	}
 	
-
-	
-//	public void cancelTicket(Ticket k, User trenutni) {
-//		Buyer kupac = (Buyer) trenutni;
-//		double bodovi = (double) Math.round(k.getPrice() / 1000 * 133 * 4);
-//		kupac.setPoints(kupac.getPoints() - bodovi);
-//		if (kupac.getUserType() == UserTypeName.GOLD && kupac.getPoints() < 1) {
-//			kupac.setPoints(5500);
-//			kupac.setUserType(UserTypeName.SILVER);
-//
-//		}
-//		if (kupac.getUserType() == UserTypeName.SILVER && kupac.getPoints() < 1) {
-//			kupac.setPoints(1500);
-//			kupac.setUserType(UserTypeName.BRONZE);;
-//
-//		}
-//		if (kupac.getUserType() == UserTypeName.BRONZE && kupac.getPoints() < 1) {
-//			kupac.setPoints(0);
-//		}
-//
-//		modifyUser(kupac);
-//	}
 	
 }

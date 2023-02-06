@@ -1,5 +1,6 @@
 package models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Post {
@@ -13,7 +14,7 @@ public class Post {
 	public Post(Post np) {
 		this.slika = np.getSlika();
 		this.tekst = np.getTekst();
-		this.komentari = np.getKomentari();
+		this.komentari = new ArrayList<Comment>();
 		this.deleted = np.getDeleted();
 	}
 	

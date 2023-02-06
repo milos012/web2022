@@ -59,7 +59,7 @@ public class PostService {
         path = data;
         try {
             List<Post> postList = Arrays.asList(mapper.readValue(Paths.get(data + "posts.json").toFile(), Post[].class));
-            System.out.println("Ucitavanje karata uspesno===");
+            System.out.println("Ucitavanje postova uspesno===");
 
             for (Post t : postList) {
             	
