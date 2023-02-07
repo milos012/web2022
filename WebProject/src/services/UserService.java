@@ -90,7 +90,7 @@ public class UserService {
 	
 	public User getByUsername(String username) {
 		for (User u : users) {
-			if (u.getUsername() == username){
+			if (Objects.equals(u.getUsername(), username)){
 				return u;
 			}
 		}

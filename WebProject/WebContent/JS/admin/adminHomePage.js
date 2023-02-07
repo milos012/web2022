@@ -10,8 +10,9 @@ $(document).ready(function(){
 			url: "/WebProject/rest/users/" + searchValue + "/posts",
 			contentType: 'application/json',
 			success: (data, status) => {
-				if (status == 200) {
-					console.log(data);
+				if (status == 'success') {
+//					console.log(data);
+					createPostsForUser(data);
 				}
 			}
 		})
@@ -22,8 +23,8 @@ $(document).ready(function(){
 	$.get({
 		url: "/WebProject/rest/users/adminAll",
 		contentType: 'application/json',
-		success: (data) => {
-			if (data != null) {
+		success: (data, status) => {
+			if (status == 'success') {
 				createUserTable(data);
 			}
 		}
@@ -34,8 +35,18 @@ $(document).ready(function(){
 });
 
 
+const createPostsForUser = (posts) => {
+	var postsDiv = document.getElementById('posts');
+	const card = "<div class='col s12 m6'> <div class='card'> <div class='card-image'> <img src=''> <span class='card-title'>Card Title</span><a class='btn-floating halfway-fab waves-effect waves-light red'><i class='material-icons'>add</i></a> </div> <div class='card-content'> <p></p></div> </div>    </div>"
+	posts.forEach((post, index) => {
+		const card = "<div class='col s12 m6'> <div class='card'> <div class='card-image'> <img src=''> <span class='card-title'>Card Title</span><a class='btn-floating halfway-fab waves-effect waves-light red'><i class='material-icons'>add</i></a> </div> <div class='card-content'> <p> " + post.tekst + "</p></div> </div>    </div>"
+
+		postsDiv.innerHTML = card;
+	});
+}
+
 const createUserTable = (users) => {
-	console.log(users);
+//	console.log(users);
     var c, r, t;
 	t = document.createElement('table');
 	r = t.insertRow(0); 

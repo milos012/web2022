@@ -296,7 +296,6 @@ public class UserController {
 	@GET
 	@Path("/{username}/posts")
 	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
 	public Response getUsersPostsByUsername(@PathParam("username") String username) {
 		List<Post> posts = getUserService().getAllPostsForUser(username);
 		if (posts.size() > 0) {

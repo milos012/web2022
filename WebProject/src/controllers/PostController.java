@@ -29,7 +29,7 @@ public class PostController {
 	private PostService getPostService() {
 		PostService postService = (PostService) ctx.getAttribute("PostService");
 		if (postService == null) {
-			postService = new PostService(ctx.getRealPath("."));
+			postService = new PostService("D:\\Users\\HpZbook15\\Desktop\\web2022\\WebProject\\WebContent/");
 			ctx.setAttribute("PostService", postService);
 		}
 		return postService;

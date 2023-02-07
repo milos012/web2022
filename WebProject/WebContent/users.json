@@ -1,1 +1,49 @@
-[{"username":"basic1","password":"basic1","email":null,"firstName":"Prvko","lastName":"Prvic","gender":"MALE","dateOfBirth":"1999-05-05","role":"USERBASIC","accStatus":null,"profilePicture":null,"posts":[{"slika":null,"tekst":"asdasdadasdda","komentari":[],"deleted":false}],"pictures":null,"requests":[],"friends":[],"deleted":false},{"username":"imeneko","password":"bokila","email":"asd@mail.com","firstName":"asd","lastName":"asd","gender":"MALE","dateOfBirth":"2023-02-21","role":"USERBASIC","accStatus":"PUBLIC","profilePicture":null,"posts":[],"pictures":[],"requests":[],"friends":[],"deleted":false}]
+[
+  {
+    "username": "basic1",
+    "password": "basic1",
+    "email": null,
+    "firstName": "Prvko",
+    "lastName": "Prvic",
+    "gender": "MALE",
+    "dateOfBirth": "1999-05-05",
+    "role": "USERBASIC",
+    "accStatus": null,
+    "profilePicture": null,
+    "posts": [
+      {
+        "slika": null,
+        "tekst": "asdasdadasdda",
+        "komentari": [],
+        "deleted": false
+      },
+      {
+        "slika": null,
+        "tekst": "tu pise nesto",
+        "komentari": [],
+        "deleted": false
+      }
+    ],
+    "pictures": null,
+    "requests": [],
+    "friends": [],
+    "deleted": false
+  },
+  {
+    "username": "imeneko",
+    "password": "bokila",
+    "email": "asd@mail.com",
+    "firstName": "asd",
+    "lastName": "asd",
+    "gender": "MALE",
+    "dateOfBirth": "2023-02-21",
+    "role": "USERBASIC",
+    "accStatus": "PUBLIC",
+    "profilePicture": null,
+    "posts": [],
+    "pictures": [],
+    "requests": [],
+    "friends": [],
+    "deleted": false
+  }
+]
