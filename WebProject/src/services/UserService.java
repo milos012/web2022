@@ -127,7 +127,7 @@ public class UserService {
 		return admins;
 	}
 	
-	private ArrayList<User> getAllBasicUsers() {
+	public ArrayList<User> getAllBasicUsers() {
 		ArrayList<User> buyers = new ArrayList<User>();
 		for (User u : users) {
 			if (u.getRole() == Role.USERBASIC) {
@@ -135,6 +135,17 @@ public class UserService {
 			}
 		}
 		return buyers;
+	}
+	
+	public ArrayList<User> getFriends(User drugar) {
+		ArrayList<User> friends = new ArrayList<User>();
+		for (User u : users) {
+			if (u.getUsername().equals(drugar.getUsername())) {
+				friends = (ArrayList<User>) u.getFriends();
+				return friends;
+			}
+		}
+		return friends;
 	}
 	
 	public ArrayList<User> getAllUsersFromFiles() {

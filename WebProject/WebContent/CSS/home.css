@@ -4,6 +4,20 @@ body {
     background: #fafafa;
 }
 
+title{
+	text-align: center;
+}
+
+.card {
+	margin: 5px
+}
+
+#searchWrap {
+	max-width: 80%
+}
+
+
+
 a,
 a:hover,
 a:focus {

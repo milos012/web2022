@@ -71,11 +71,11 @@ $(document).ready(function() {
 				contentType: "application/json",
 				success: function(bul){
 					console.log("poslato na bek");
-					window.location.href ="../HTML/home.html";
+					window.location.href ="../HTML/mypage.html";
 				}
 			})
-      		console.log("poslato na bek ali nesto");
-      		console.log(newGender);
+      		
+      		
 		}
 	})
 

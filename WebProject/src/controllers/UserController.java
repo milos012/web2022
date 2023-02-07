@@ -184,8 +184,21 @@ public class UserController {
 //				request.getSession().setAttribute("KorisniciIspis", getUserService().getAllUsers());
 				return Response.status(Status.OK).entity(getUserService().getAllUsers()).build();
 			}else if (trenutni.getRole() == Role.USERBASIC) {
-				//TODO
-				return Response.status(Status.UNAUTHORIZED).build();
+
+				return Response.status(Status.OK).entity(getUserService().getAllBasicUsers()).build();
+			}
+		}
+		return Response.status(Status.BAD_REQUEST).build();
+	}
+	
+	@GET
+	@Path("/friends")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getFriends(){
+		User trenutni = (User)request.getSession().getAttribute("user");
+		if(trenutni != null && trenutni.equals(getUserService().getByUsername(trenutni.getUsername()))) {
+			if (trenutni.getRole() == Role.USERBASIC) {
+				return Response.status(Status.OK).entity(getUserService().getFriends(trenutni)).build();
 			}
 		}
 		return Response.status(Status.BAD_REQUEST).build();
