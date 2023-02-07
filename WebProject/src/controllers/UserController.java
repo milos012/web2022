@@ -58,18 +58,21 @@ public class UserController {
 	@Path("/login")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response login() throws IOException {
-		LoginDTO login = null;
-		try {
-			ServletInputStream reader = request.getInputStream();
-			byte[] all = reader.readAllBytes();
-			String str = new String(all, StandardCharsets.UTF_8);
-
-			ObjectMapper mapper = new ObjectMapper();
-			login = mapper.readValue(str, LoginDTO.class);
-	    } catch (Exception e) { 
-	    	return Response.status(Status.BAD_REQUEST).entity(e.getMessage()).build();
-	    }
+	public Response login(LoginDTO login) throws IOException {
+//		LoginDTO login = null;
+//		try {
+//			ServletInputStream reader = request.getInputStream();
+//			byte[] all = reader.readAllBytes();
+//			String str = new String(all, StandardCharsets.UTF_8);
+//
+//			ObjectMapper mapper = new ObjectMapper();
+//			login = mapper.readValue(str, LoginDTO.class);
+//	    } catch (Exception e) { 
+//	    	return Response.status(Status.BAD_REQUEST).entity(e.getMessage()).build();
+//	    }
+		if (login == null) {
+			return Response.status(Status.BAD_REQUEST).entity("no login data").build();
+		}
 
 		User user = getUserService().login(login.getUsername(), login.getPassword());
 		
