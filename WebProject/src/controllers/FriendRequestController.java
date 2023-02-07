@@ -68,6 +68,22 @@ public class FriendRequestController {
 //		return null;
 	}
 	
+	
+	@POST
+	@Path("/accept")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response acceptFR(FriendRequest k) {
+		User trenutni = (User)request.getSession().getAttribute("user");
+		
+		if(trenutni != null && trenutni.equals(getUserService().getByUsername(trenutni.getUsername()))) {
+			if (trenutni.getRole() == Role.USERBASIC) {
+				return Response.status(Status.OK).entity(getFriendRequestService().acceptFR(k)).build();
+			}
+		}
+		return Response.status(Status.BAD_REQUEST).build();
+	}
+	
 	@GET
 	@Path("/getAll")
 	@Produces(MediaType.APPLICATION_JSON)

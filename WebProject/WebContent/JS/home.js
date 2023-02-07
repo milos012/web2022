@@ -183,12 +183,34 @@ const createFRTable = (friendrequests) => {
 		c = r.insertCell(2);
 		c.innerHTML = friendrequest.dateSent;
 		c = r.insertCell(3);
-		c.innerHTML = "<button name=\"prihvatiFR\" data-user=" + friendrequest.primalac.username + " data-rownum=" + (index+1) + " class=\"btn waves-effect waves-light\"> accept </button>";
+		c.innerHTML = "<button name=\"prihvatiFR\" freqA='" + JSON.stringify(friendrequest) + "' data-rownum=" + (index+1) + " class=\"btn waves-effect waves-light\"> accept </button>";
 		c = r.insertCell(4);
 		c.innerHTML = "<button name=\"odbijFR\" data-user=" + friendrequest.primalac.username + " data-rownum=" + (index+1) + " class=\"btn waves-effect waves-light\"> reject </button>";	
 			
 	});
 	t.setAttribute("id", "table");
 	document.getElementById("tab4").appendChild(t);
+	setAcceptBtnFunction();
 		
+}
+
+const setAcceptBtnFunction = () => {
+	var deleteBtns = document.getElementsByName("prihvatiFR");
+	
+	deleteBtns.forEach(btn => {
+		btn.addEventListener('click', (ev) => {
+
+			
+			$.post({
+				url: "/WebProject/rest/friendrequests/accept",
+				data: JSON.stringify(ev.target.getAttribute('freqA')),
+				contentType: "application/json",
+				success: function(bul){
+					console.log("poslato na bek");
+					window.location.href = window.location.href;
+				}
+			})
+
+		});
+	});
 }
