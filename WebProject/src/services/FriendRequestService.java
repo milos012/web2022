@@ -117,13 +117,13 @@ public class FriendRequestService {
 		
 	}
 	
-	public void acceptFR(FriendRequest fr) {
+	public FriendRequest acceptFR(FriendRequest fr) {
 		if (getFriendRequest(fr.getPosiljalac(), fr.getPrimalac()) == null) {
 			System.out.println("ERROR! FR doesn't exist");
-			return;
+			return null;
 		}
 		for (FriendRequest x : friendRequests) {
-			if (x.getPrimalac().getEmail().equals(fr.getPrimalac().getEmail()) &&  x.getPosiljalac().getEmail().equals(x.getPosiljalac().getEmail())) {
+			if (x.getPosiljalac().getEmail().equals(fr.getPosiljalac().getEmail())) {
 				allFriendRequests.remove(x);
 				x.setStatus(RequestStatus.ACCEPTED);
 				allFriendRequests.add(x);
@@ -133,9 +133,11 @@ public class FriendRequestService {
 		ObjectMapper mapper = new ObjectMapper();
 		try {
 			mapper.writeValue(Paths.get(path + "frequests.json").toFile(), getAllFriendRequests());
+			System.out.println("FR Prihvacen");
 		} catch (IOException e) {
 			System.out.println("Error! Writing to file was unsuccessful.");
 		}
+		return fr;
 		
 	}
 	

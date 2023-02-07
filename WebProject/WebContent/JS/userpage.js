@@ -1,4 +1,7 @@
 var fileContent;
+var username1;
+var email1;
+
 
 $(document).ready(function() {
 	$.get({
@@ -8,6 +11,9 @@ $(document).ready(function() {
 			if(!user){
 				window.location.href = "../HTML/home.html";
 			}
+
+			username1 = user.username;
+			email1 = user.email;
 
 			var firstname = user.firstName;
 			var lastname = user.lastName;

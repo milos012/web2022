@@ -127,7 +127,7 @@ public class UserService {
 		return admins;
 	}
 	
-	private ArrayList<User> getAllBasicUsers() {
+	public ArrayList<User> getAllBasicUsers() {
 		ArrayList<User> buyers = new ArrayList<User>();
 		for (User u : users) {
 			if (u.getRole() == Role.USERBASIC) {
@@ -135,6 +135,17 @@ public class UserService {
 			}
 		}
 		return buyers;
+	}
+	
+	public ArrayList<User> getFriends(User drugar) {
+		ArrayList<User> friends = new ArrayList<User>();
+		for (User u : users) {
+			if (u.getUsername().equals(drugar.getUsername())) {
+				friends = (ArrayList<User>) u.getFriends();
+				return friends;
+			}
+		}
+		return friends;
 	}
 	
 	public ArrayList<User> getAllUsersFromFiles() {
@@ -167,17 +178,24 @@ public class UserService {
 		}
 	}
 	
-	//TODO - prosiri da se menjaju i ostale stavke + proveri da li radi ovako
 	public void modifyUser(User u) {
-		User modified = getByUsername(u.getUsername());
-		modified.setFirstName(u.getFirstName());
-		modified.setLastName(u.getLastName());
-		modified.setPassword(u.getPassword());
-		// promeni profilnu sliku
+		
+		for (User user : users) {
+			if (user.getUsername().equals(u.getUsername())) {
+				user.setFirstName(u.getFirstName());
+				user.setLastName(u.getLastName());
+				user.setPassword(u.getPassword());
+				user.setGender(u.getGender());
+				user.setAccStatus(u.getAccStatus());
+				user.setProfilePicture(u.getProfilePicture());
+			}
+		}
+		
 		ObjectMapper mapper = new ObjectMapper();
-		if (modified.getRole() == Role.USERBASIC) {
+		if (u.getRole() == Role.USERBASIC) {
 			try {
 				mapper.writeValue(Paths.get(path + "users.json").toFile(), getAllBasicUsers());
+				System.out.println("Korisnik uspesno izmenjen.");
 			} catch (IOException e) {
 				System.out.println("Error! Writing to file was unsuccessful.");
 			}

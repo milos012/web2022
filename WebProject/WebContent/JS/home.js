@@ -1,125 +1,216 @@
-$.noConflict()
-function getDateTime(datetime){	
-	var month={"01": "Januar",
-            "02": "Februar",
-            "03": "Mart",
-            "04": "April",
-            "05": "Maj",
-            "06": "Jun",
-            "07": "Jul",
-            "08": "Avgust",
-            "09": "Septembar",
-            "10": "Oktobar",
-            "11": "Novembar",
-            "12": "Decembar"}
+var fileContent;
+var email1;
+var username1;
 
-	
-    var date = datetime.split("T")[0];
-    var time = datetime.split("T")[1];
 
-    return date.split("-")[2] + ". "+month[date.split("-")[1]] + " " + date.split("-")[0] + ". u " + time.split(":")[0] +":"+time.split(":")[1];
+const logout = () => {
+	$.get({
+		url: "/WebProject/rest/users/logout",
+		contentType: 'application/json',
+		success: () => {
+			window.location.assign("/WebProject/HTML/login.html");
+		}
+	})
 }
 
+$(document).ready(function() {
 
-function postaviPolja(user){
-	$("input[name='username']").val(user.username);
-	$("input[name='password']").val(user.password);
-	$("input[name='firstName']").val(user.firstName);
-	$("input[name='lastName']").val(user.lastName);
-	$("input[name='dateOfBirth']").val(user.dateOfBirth);
-	$("input[name='gender']").val(user.gender);
-	$("input[name='role']").val(user.role);
-	
-	if(user.role == "BUYER"){
-		$("#profil-dugme1").text("Manifestations");
-		$("#profil-dugme2").text("Tickets");
-		$("input[name='userTypeName']").val(user.userTypeName);
+	$("a[id='logout']").bind("click", logout);
+
+	$(".tabs").tabs();
+
+	$.get({
+		url : "/WebProject/rest/users/user",
+		contentType: "application/json",
+		success: function(user){
+
+			email1 = user.email;
+			username1 = user.username;
+			
+			
+            
+		}
+	})
+
+	$.get({
+		url: "/WebProject/rest/users/all",
+		contentType: 'application/json',
+		success: (data) => {
+			if (data != null) {
+				createUserTable(data);
+			}
+		}
+			
+	});
+
+
+	$.get({
+		url: "/WebProject/rest/users/friends",
+		contentType: 'application/json',
+		success: (data) => {
+			if (data != null) {
+				createFriendsTable(data);
+			}
+		}
+			
+	});
+
+	$.get({
+		url: "/WebProject/rest/friendrequests/getAll",
+		contentType: 'application/json',
+		success: (data) => {
+			if (data != null) {
+				
+				createFRTable(data);
+			}
+		}
+			
+	});
 		
-	} else if(user.role == "ADMIN"){
-		$("#profil-dugme1").text("Register new seller");
-		$("#profil-dugme2").text("New manifestations");
-		$("#profil-dugme3").text("Users");
-		$("#profil-dugme4").text("Tickets");
-	}else{
-		$("#profil-dugme1").text("Add manifestation");
-		$("#profil-dugme2").text("My manifestations");
-		$("#profil-dugme3").text("Sold tickets");
-	}
-}
-
-function dodajRedKorisnika(korisnik){
-	if(!korisnik.deleted){
-		let tr;
-	    if(korisnik.role == "SELLER")
-	        tr = $("<tr class='td-korisnik prodavac' id='"+korisnik.username+"'></tr>");
-	    else
-	        tr = $("<tr class='td-korisnik kupac' id='"+korisnik.username+"'></tr>");
-	    let slika = $("<td><img class='slika-user' src='../images/"+korisnik.gender+".png' height='50px'></td>")
-	    let username = $("<td><p class='username'>"+korisnik.username+"</p></td>")
-	    let imePrezime =  $("<td><p class='imepre'>"+korisnik.firstName + " " + korisnik.lastName+"</p></td>")
-	    let rodjen = $("<td><p class='rodjen'>Rodjen:"+ korisnik.dateOfBirth+"</p></td>")
-	    let uloga =  $("<td><p class='uloga'>"+ korisnik.role+"</p></td>")
-	    if(korisnik.role =='BUYER' && korisnik.points)
-	    	uloga = $("<td><p class='uloga'>"+ korisnik.role+"</p><img src='../images/coin.png' height='30px'>"+ korisnik.points +"</td>")
-	    let brisi = $("<td></td>");
-	    if(korisnik.role != "ADMIN")
-	   		brisi =  $("<td><button class='brisi' onclick='brisi(\""+korisnik.username+"\")'>Obrisi</button></td>")
 	
-	    
-	    tr.append(slika);
-	    tr.append(username);
-	    tr.append(imePrezime)
-	    tr.append(rodjen);
-	    tr.append(uloga);
-	    tr.append(brisi);
-	    $("#tabela-karata").append(tr);
-	}
-}
-
-function dodajRedKarte(nazivi, karta){
-	let tr;
-
-    if(karta.tipKarte == "REGULAR"){
-    	 tr = $("<tr class='reg-tr' id='"+karta.id+"'></tr>");
-    } else if(karta.tipKarte == "FAN_PIT"){
-    	tr = $("<tr class='fan-tr' id='"+karta.id+"'></tr>");
-    }else if(karta.tipKarte == "VIP"){
-    	tr = $("<tr class='vip-tr' id='"+karta.id+"'></tr>");
-    }
-    let slika = $("<td><img class='slika-karta' src='../images/default.png' height='50px'></td>")
-    let idKarte = $("<td><p class='idKarte'>"+karta.id+"</p></td>")
-    let kupac =  $("<td><p class='kupac'>Kupuje: "+karta.buyer+"</p></td>") 
-    tr.append(slika);
-    tr.append(idKarte);
-    tr.append(prodavac);
-    tr.append(kupac);
-    let id = (karta.manifestation).toString();
-    let datumVreme = $("<td><p class='datum-vreme'>"+ getManifestationDateTime(karta.manifestationDateTime)+"</p></td>")
-    let cena =  $("<td><p class='cenaKarte'>"+ karta.price + " din</p></td>")
-	let tipKarte = $("<td><p class='tip'>"+ karta.ticketType + "</p></td>");
-	let status = $("<td><p class='tip'>"+ karta.ticketStatus + "</p></td>");
 	
-    tr.append(datumVreme);
-    tr.append(cena);
-    tr.append(tipKarte);
-    tr.append(status);
-    	
+})
 
-    $("#tabela-karata").append(tr);
-   
+const createUserTable = (users) => {
+	console.log(users);
+	var c, r, t;
+	t = document.createElement('table');
+	r = t.insertRow(0); 
+	c = r.insertCell(0);
+	c.innerHTML = "First Name";
+	c = r.insertCell(1);
+	c.innerHTML = "Last Name";
+	c = r.insertCell(2);
+	c.innerHTML = "Username";
+	c = r.insertCell(3);
+	c.innerHTML = "Email";
+	c = r.insertCell(4);
+	c.innerHTML = "Birthday";
+	c = r.insertCell(5);
+	c.innerHTML = "View";
+	c = r.insertCell(6);
+	c.innerHTML = "FR";
+	users.forEach((user, index) => {
+		r = t.insertRow(index + 1);
+		c = r.insertCell(0);
+		c.innerHTML = user.firstName;
+		c = r.insertCell(1);
+		c.innerHTML = user.lastName;
+		c = r.insertCell(2);
+		c.innerHTML = user.username;
+		c = r.insertCell(3);
+		c.innerHTML = user.email;
+		c = r.insertCell(4);
+		c.innerHTML = user.dateOfBirth;
+		c = r.insertCell(5);
+		c.innerHTML = "<button name=\"otvoriProfil\" data-user=" + user.username + " data-rownum=" + (index+1) + " class=\"btn waves-effect waves-light\"> view </button>";
+		c = r.insertCell(6);
+		c.innerHTML = "<button name=\"posaljiReq\" data-user=" + user.username + " data-rownum=" + (index+1) + " class=\"btn waves-effect waves-light\"> send </button>";	
+			
+	});
+	t.setAttribute("id", "table");
+	document.getElementById("tab2").appendChild(t);
+		
 }
 
-function brisi(username){
-    $.get({
-        url: "/WebProject/rest/users/delete?username=" + username,
-        contentType: "application/json",
-        success: function(){
-			$("#"+ username).remove();
-        }
-   })
+
+const createFriendsTable = (users) => {
+	console.log("prijatelji");
+	console.log(users);
+	var c, r, t;
+	t = document.createElement('table');
+	r = t.insertRow(0); 
+	c = r.insertCell(0);
+	c.innerHTML = "First Name";
+	c = r.insertCell(1);
+	c.innerHTML = "Last Name";
+	c = r.insertCell(2);
+	c.innerHTML = "Username";
+	c = r.insertCell(3);
+	c.innerHTML = "Email";
+	c = r.insertCell(4);
+	c.innerHTML = "Birthday";
+	c = r.insertCell(5);
+	c.innerHTML = "View";
+	c = r.insertCell(6);
+	c.innerHTML = "Delete";
+	users.forEach((user, index) => {
+		r = t.insertRow(index + 1);
+		c = r.insertCell(0);
+		c.innerHTML = user.firstName;
+		c = r.insertCell(1);
+		c.innerHTML = user.lastName;
+		c = r.insertCell(2);
+		c.innerHTML = user.username;
+		c = r.insertCell(3);
+		c.innerHTML = user.email;
+		c = r.insertCell(4);
+		c.innerHTML = user.dateOfBirth;
+		c = r.insertCell(5);
+		c.innerHTML = "<button name=\"otvoriProfil\" data-user=" + user.username + " data-rownum=" + (index+1) + " class=\"btn waves-effect waves-light\"> view </button>";
+		c = r.insertCell(6);
+		c.innerHTML = "<button name=\"obrisiPrijatelja\" data-user=" + user.username + " data-rownum=" + (index+1) + " class=\"btn waves-effect waves-light\"> delete </button>";	
+			
+	});
+	t.setAttribute("id", "table");
+	document.getElementById("tab3").appendChild(t);
+		
 }
 
-function obrisiDivPretrage()
-{
-	$("#PretragaTabele").empty();
+
+const createFRTable = (friendrequests) => {
+	console.log("zahtevi");
+	console.log(friendrequests);
+	var c, r, t;
+	t = document.createElement('table');
+	r = t.insertRow(0); 
+	c = r.insertCell(0);
+	c.innerHTML = "Primalac";
+	c = r.insertCell(1);
+	c.innerHTML = "Posiljalac";
+	c = r.insertCell(2);
+	c.innerHTML = "DateSent";
+	c = r.insertCell(3);
+	c.innerHTML = "Accept";
+	c = r.insertCell(4);
+	c.innerHTML = "Reject";
+	friendrequests.forEach((friendrequest, index) => {
+		r = t.insertRow(index + 1);
+		c = r.insertCell(0);
+		c.innerHTML = friendrequest.primalac.username;
+		c = r.insertCell(1);
+		c.innerHTML = friendrequest.posiljalac.username;
+		c = r.insertCell(2);
+		c.innerHTML = friendrequest.dateSent;
+		c = r.insertCell(3);
+		c.innerHTML = "<button name=\"prihvatiFR\" freqA='" + JSON.stringify(friendrequest) + "' data-rownum=" + (index+1) + " class=\"btn waves-effect waves-light\"> accept </button>";
+		c = r.insertCell(4);
+		c.innerHTML = "<button name=\"odbijFR\" data-user=" + friendrequest.primalac.username + " data-rownum=" + (index+1) + " class=\"btn waves-effect waves-light\"> reject </button>";	
+			
+	});
+	t.setAttribute("id", "table");
+	document.getElementById("tab4").appendChild(t);
+	setAcceptBtnFunction();
+		
+}
+
+const setAcceptBtnFunction = () => {
+	var deleteBtns = document.getElementsByName("prihvatiFR");
+	
+	deleteBtns.forEach(btn => {
+		btn.addEventListener('click', (ev) => {
+
+			
+			$.post({
+				url: "/WebProject/rest/friendrequests/accept",
+				data: JSON.stringify(ev.target.getAttribute('freqA')),
+				contentType: "application/json",
+				success: function(bul){
+					console.log("poslato na bek");
+					window.location.href = window.location.href;
+				}
+			})
+
+		});
+	});
 }

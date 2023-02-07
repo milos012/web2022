@@ -17,7 +17,9 @@ import javax.ws.rs.core.Response.Status;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import dtos.LoginDTO;
+import enums.Gender;
 import enums.Role;
+import enums.UserStatus;
 import models.Post;
 import models.User;
 import services.UserService;
@@ -136,18 +138,23 @@ public class UserController {
 		}
 	}
 	
-	// TODO dodati i promenu profilne slike
-	@GET
+	@POST
 	@Path("/edit")
 	@Produces(MediaType.APPLICATION_JSON)
-	public User editUser(@QueryParam("password") String password, @QueryParam("firstName") String fName, @QueryParam("lastName") String lName ) {
+	@Consumes(MediaType.APPLICATION_JSON)
+	public User editUser(User ur ) {
 		User trenutni = (User)request.getSession().getAttribute("user");
 		if(trenutni != null && trenutni.equals(getUserService().getByUsername(trenutni.getUsername()))) {
-			trenutni.setFirstName(fName);
-			trenutni.setLastName(lName);
-			trenutni.setPassword(password);
-			request.getSession().setAttribute("user", trenutni);
+			trenutni.setFirstName(ur.getFirstName());
+			trenutni.setLastName(ur.getLastName());
+			trenutni.setPassword(ur.getPassword());
+			System.out.println("novi ln: " + ur.getLastName());
+			trenutni.setProfilePicture(ur.getProfilePicture());
+			System.out.println("pollol: " + ur.getGender() );
+			trenutni.setGender(ur.getGender());
+			trenutni.setAccStatus(ur.getAccStatus());
 			getUserService().modifyUser(trenutni);
+			request.getSession().setAttribute("user", trenutni);
 			return trenutni;
 		}
 		return null;
@@ -180,8 +187,21 @@ public class UserController {
 //				request.getSession().setAttribute("KorisniciIspis", getUserService().getAllUsers());
 				return Response.status(Status.OK).entity(getUserService().getAllUsers()).build();
 			}else if (trenutni.getRole() == Role.USERBASIC) {
-				//TODO
-				return Response.status(Status.UNAUTHORIZED).build();
+
+				return Response.status(Status.OK).entity(getUserService().getAllBasicUsers()).build();
+			}
+		}
+		return Response.status(Status.BAD_REQUEST).build();
+	}
+	
+	@GET
+	@Path("/friends")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getFriends(){
+		User trenutni = (User)request.getSession().getAttribute("user");
+		if(trenutni != null && trenutni.equals(getUserService().getByUsername(trenutni.getUsername()))) {
+			if (trenutni.getRole() == Role.USERBASIC) {
+				return Response.status(Status.OK).entity(getUserService().getFriends(trenutni)).build();
 			}
 		}
 		return Response.status(Status.BAD_REQUEST).build();
