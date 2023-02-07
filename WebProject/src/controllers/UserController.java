@@ -17,6 +17,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import dtos.LoginDTO;
 import enums.Role;
+import models.Post;
 import models.User;
 import services.UserService;
 
@@ -290,5 +291,19 @@ public class UserController {
 		}
 		return result;
 	}
+	
+	
+	@GET
+	@Path("/{username}/posts")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response getUsersPostsByUsername(@PathParam("username") String username) {
+		List<Post> posts = getUserService().getAllPostsForUser(username);
+		if (posts.size() > 0) {
+			return Response.status(Status.OK).entity(posts).build();
+		}
+		return Response.status(Status.BAD_REQUEST).build();
+	}
+	
 	
 }

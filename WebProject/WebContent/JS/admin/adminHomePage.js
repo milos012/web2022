@@ -3,6 +3,22 @@ $(document).ready(function(){
 
 	$(".tabs").tabs();
 	
+	$("a[id='searchBtn']").bind('click', () => {
+		var searchValue = $("input[id='search']").val();
+		console.log(searchValue);
+		$.get({
+			url: "/WebProject/rest/users/" + searchValue + "/posts",
+			contentType: 'application/json',
+			success: (data, status) => {
+				if (status == 200) {
+					console.log(data);
+				}
+			}
+		})
+		$("input[id='search']").val('');
+		
+	});
+	
 	$.get({
 		url: "/WebProject/rest/users/adminAll",
 		contentType: 'application/json',
@@ -13,6 +29,8 @@ $(document).ready(function(){
 		}
 		
 	});
+	
+
 });
 
 

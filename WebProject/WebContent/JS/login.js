@@ -13,24 +13,24 @@ $(document).ready(function(){
         }
         if(username && password){
             $.post({
-			url: "/WebProject/rest/users/login",
-			contentType: 'application/json',
-			data: JSON.stringify({"username": username, "password":password}),
-			success: function(user, status){
-				if(status != 200){
-					$("#error").show();
-				}else{
-//					console.log(user);
-					sessionStorage.setItem("user-role", user.role);
-					if (user.role == 'ADMIN') {
-						window.location.replace('/WebProject/HTML/admin/adminHomePage.html');
-					} else if (user.role == 'BASICUSER') {
-						window.location.replace('/WebProject/HTML/home.html');
+				url: "/WebProject/rest/users/login",
+				contentType: 'application/json',
+				data: JSON.stringify({"username": username, "password":password}),
+				success: function(user, status){
+					console.log(user, status);
+					if(status != 'success'){
+						$("#error").show();
+					}else{
+						console.log(user);
+						sessionStorage.setItem("user-role", user.role);
+						if (user.role == 'ADMIN') {
+							window.location.replace('/WebProject/HTML/admin/adminHomePage.html');
+						} else if (user.role == 'USERBASIC') {
+							window.location.replace('/WebProject/HTML/home.html');
+						}
 					}
 				}
-			}
-			
-		});
+			});
         }
             
     });

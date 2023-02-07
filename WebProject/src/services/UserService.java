@@ -392,6 +392,11 @@ public class UserService {
 		return false;
 	}
 	
+	public List<Post> getAllPostsForUser(String username) {
+		User u = getByUsername(username);
+		return u.getPosts();
+	}
+	
 	
 	
 }
