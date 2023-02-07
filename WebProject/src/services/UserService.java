@@ -167,17 +167,24 @@ public class UserService {
 		}
 	}
 	
-	//TODO - prosiri da se menjaju i ostale stavke + proveri da li radi ovako
 	public void modifyUser(User u) {
-		User modified = getByUsername(u.getUsername());
-		modified.setFirstName(u.getFirstName());
-		modified.setLastName(u.getLastName());
-		modified.setPassword(u.getPassword());
-		// promeni profilnu sliku
+		
+		for (User user : users) {
+			if (user.getUsername().equals(u.getUsername())) {
+				user.setFirstName(u.getFirstName());
+				user.setLastName(u.getLastName());
+				user.setPassword(u.getPassword());
+				user.setGender(u.getGender());
+				user.setAccStatus(u.getAccStatus());
+				user.setProfilePicture(u.getProfilePicture());
+			}
+		}
+		
 		ObjectMapper mapper = new ObjectMapper();
-		if (modified.getRole() == Role.USERBASIC) {
+		if (u.getRole() == Role.USERBASIC) {
 			try {
 				mapper.writeValue(Paths.get(path + "users.json").toFile(), getAllBasicUsers());
+				System.out.println("Korisnik uspesno izmenjen.");
 			} catch (IOException e) {
 				System.out.println("Error! Writing to file was unsuccessful.");
 			}

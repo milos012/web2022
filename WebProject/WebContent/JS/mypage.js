@@ -10,7 +10,7 @@ $(document).ready(function() {
 			}
 
 			var firstname = user.firstName;
-			var lastname = user.firstName;
+			var lastname = user.lastName;
 			var email = user.email;
 			var dateOfBirth = user.dateOfBirth;
 			var gender = user.gender;
@@ -24,6 +24,13 @@ $(document).ready(function() {
 			document.getElementById("datumr").innerHTML = dateOfBirth;
 			document.getElementById("gender").innerHTML = gender;
 			document.getElementById("accStatus").innerHTML = accStatus;
+			
+			if (profPic == null) {
+			  document.getElementById("avatar").innerHTML = '<img src="https://i.imgur.com/cMy8V5j.png" alt="user" width="100">';
+			} else {
+			  document.getElementById("avatar").innerHTML = '<img src=' + profPic + ' alt="user" width="100">';
+			}
+			
 
 			$.each(user.posts, function(i, f) {
 				var tblRow = "<tr>" + "<td>" + f.tekst + "</td>" +
