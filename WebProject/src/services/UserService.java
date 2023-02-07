@@ -396,6 +396,20 @@ public class UserService {
 		User u = getByUsername(username);
 		return u.getPosts();
 	}
+
+
+	public List<Post> deleteUsersPost(String username, String tekst) {
+		// TODO Auto-generated method stub
+		List<Post> posts = getAllPostsForUser(username);
+		for (Post p : posts) {
+			if (p.getTekst().equals(tekst)) {
+				p.setDeleted(true);
+			}
+		}
+		
+		
+		return posts;
+	}
 	
 	
 	

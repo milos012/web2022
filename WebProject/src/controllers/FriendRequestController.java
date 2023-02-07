@@ -23,11 +23,14 @@ public class FriendRequestController {
 	@Context
 	HttpServletRequest request;
 	
+	private final String bojanpath = "D:\\Users\\HpZbook15\\Desktop\\web2022\\WebProject\\WebContent\\"; 
+	
+	
 	//TODO: srediti putanju da pokazuje na WebContent folder?
 	private FriendRequestService getFriendRequestService() {
 		FriendRequestService friendRequestService = (FriendRequestService) ctx.getAttribute("FriendRequestService");
 		if (friendRequestService == null) {
-			friendRequestService = new FriendRequestService(ctx.getRealPath("."));
+			friendRequestService = new FriendRequestService(bojanpath);
 			ctx.setAttribute("FriendRequestService", friendRequestService);
 		}
 		return friendRequestService;

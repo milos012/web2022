@@ -24,12 +24,13 @@ public class PostController {
 	@Context
 	HttpServletRequest request;
 	
+	private final String bojanpath = "D:\\Users\\HpZbook15\\Desktop\\web2022\\WebProject\\WebContent\\"; 
 	
 	//TODO: srediti putanju da pokazuje na WebContent folder?
 	private PostService getPostService() {
 		PostService postService = (PostService) ctx.getAttribute("PostService");
 		if (postService == null) {
-			postService = new PostService("D:\\Users\\HpZbook15\\Desktop\\web2022\\WebProject\\WebContent/");
+			postService = new PostService(bojanpath);
 			ctx.setAttribute("PostService", postService);
 		}
 		return postService;

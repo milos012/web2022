@@ -22,12 +22,13 @@ public class CommentController {
 	@Context
 	HttpServletRequest request;
 	
+	private final String bojanpath = "D:\\Users\\HpZbook15\\Desktop\\web2022\\WebProject\\WebContent\\"; 
 	
 	//TODO: promeniti putanju?
 	private CommentService getCommentService() {
 		CommentService commentService = (CommentService) ctx.getAttribute("CommentService");	
 		if (commentService == null) {
-			commentService = new CommentService(ctx.getRealPath("."));
+			commentService = new CommentService(bojanpath);
 			ctx.setAttribute("CommentService", commentService);
 		}
 		return commentService;

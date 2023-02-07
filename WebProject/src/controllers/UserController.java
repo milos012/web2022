@@ -1,6 +1,7 @@
 package controllers;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -45,11 +46,13 @@ public class UserController {
 	@Context
 	private HttpServletRequest request;
 	
+	private final String bojanpath = "D:\\Users\\HpZbook15\\Desktop\\web2022\\WebProject\\WebContent"; 
+	
 	//TODO: promeniti putanju?
 	private UserService getUserService() {
 		UserService userService = (UserService) ctx.getAttribute("UserService");
 		if (userService == null) {
-			userService = new UserService(ctx.getRealPath("."));
+			userService = new UserService(bojanpath);
 			ctx.setAttribute("UserService", userService);
 		}
 		return userService;
@@ -304,5 +307,14 @@ public class UserController {
 		return Response.status(Status.BAD_REQUEST).build();
 	}
 	
-	
+	@DELETE
+	@Path("/{username}/post/{tekst}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response deletePostForUser(@PathParam("username") String username, @PathParam("tekst") String tekst) {
+		List<Post> posts = getUserService().deleteUsersPost(username, tekst);
+		if (posts.size() > 0) {
+			return Response.status(Status.OK).entity(posts).build();
+		}
+		return Response.status(Status.BAD_REQUEST).build();
+	}
 }

@@ -5,7 +5,7 @@ $(document).ready(function(){
 	
 	$("a[id='searchBtn']").bind('click', () => {
 		var searchValue = $("input[id='search']").val();
-		console.log(searchValue);
+//		console.log(searchValue);
 		$.get({
 			url: "/WebProject/rest/users/" + searchValue + "/posts",
 			contentType: 'application/json',
@@ -16,7 +16,7 @@ $(document).ready(function(){
 				}
 			}
 		})
-		$("input[id='search']").val('');
+//		$("input[id='search']").val('');
 		
 	});
 	
@@ -37,11 +37,30 @@ $(document).ready(function(){
 
 const createPostsForUser = (posts) => {
 	var postsDiv = document.getElementById('posts');
-	const card = "<div class='col s12 m6'> <div class='card'> <div class='card-image'> <img src=''> <span class='card-title'>Card Title</span><a class='btn-floating halfway-fab waves-effect waves-light red'><i class='material-icons'>add</i></a> </div> <div class='card-content'> <p></p></div> </div>    </div>"
+	console.log(posts);
+	postsDiv.innerHTML = '';
 	posts.forEach((post, index) => {
-		const card = "<div class='col s12 m6'> <div class='card'> <div class='card-image'> <img src=''> <span class='card-title'>Card Title</span><a class='btn-floating halfway-fab waves-effect waves-light red'><i class='material-icons'>add</i></a> </div> <div class='card-content'> <p> " + post.tekst + "</p></div> </div>    </div>"
-
-		postsDiv.innerHTML = card;
+		
+		const card = "<div class='col s4'> <div class='card'> <div class='card-image'> <img src='" + post.slika + "'> <span class='card-title'>Card Title</span><a class='btn-floating halfway-fab waves-effect waves-light red' name='delete-post'>delete</a> </div> <div class='card-content'> <p> " + post.tekst + "</p> </div> </div> </div>"
+		if (!post.deleted) {
+			postsDiv.innerHTML += card;
+		}
+		
+	});
+	var deletes = document.getElementsByName('delete-post');
+	deletes.forEach((el, index) => {
+		el.addEventListener('click', () => {
+			var username = $("input[id='search']").val();
+			$.ajax({
+				url: '/WebProject/rest/users/' + username + '/post/' + posts[index].tekst,
+				type: 'DELETE',
+				success: (data, status) => {
+					if(status == 'success') {
+						createPostsForUser(data);
+					}
+				}
+			});
+		})
 	});
 }
 

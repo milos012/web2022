@@ -21,10 +21,12 @@ public class DirectMessageController {
 	@Context
 	HttpServletRequest request;
 	
+	private final String bojanpath = "D:\\Users\\HpZbook15\\Desktop\\web2022\\WebProject\\WebContent\\"; 
+	
 	private DirectMessageService getDirectMessageService() {
 		DirectMessageService dmService = (DirectMessageService) ctx.getAttribute("DirectMessageService");
 		if (dmService == null) {
-			dmService = new DirectMessageService(ctx.getRealPath("."));
+			dmService = new DirectMessageService(bojanpath);
 			ctx.setAttribute("DirectMessageService", dmService);
 		}
 		return dmService;
