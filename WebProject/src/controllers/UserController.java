@@ -49,7 +49,7 @@ public class UserController {
 	private UserService getUserService() {
 		UserService userService = (UserService) ctx.getAttribute("UserService");
 		if (userService == null) {
-			userService = new UserService("D:\\Users\\HpZbook15\\Desktop\\web2022\\WebProject\\WebContent/");
+			userService = new UserService(ctx.getRealPath("."));
 			ctx.setAttribute("UserService", userService);
 		}
 		return userService;
