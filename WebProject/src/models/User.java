@@ -1,6 +1,7 @@
 package models;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -35,6 +36,24 @@ public class User {
 	public User() {
 		super();
 	}
+	
+	public User(User u1) {
+		this.username = u1.getUsername();
+		this.password = u1.getPassword();
+		this.email = u1.getEmail();
+		this.firstName = u1.getFirstName();
+		this.lastName = u1.getLastName();
+		this.gender = u1.getGender();
+		this.dateOfBirth = u1.getDateOfBirth();
+		this.role = u1.getRole();
+		this.accStatus = u1.getAccStatus();
+		this.profilePicture = u1.getProfilePicture();
+		this.posts = new ArrayList<Post>();
+		this.pictures = new ArrayList<Picture>();
+		this.requests = new ArrayList<FriendRequest>();
+		this.friends = new ArrayList<User>();
+		this.deleted = u1.getDeleted();
+	}
 
 	public User(String username, String password, String email, String firstName, String lastName, Gender gender,
 			LocalDate dateOfBirth, Role role, UserStatus accStatus, String profilePicture, List<Post> posts,
@@ -50,10 +69,10 @@ public class User {
 		this.role = role;
 		this.accStatus = accStatus;
 		this.profilePicture = profilePicture;
-		this.posts = posts;
-		this.pictures = pictures;
-		this.requests = requests;
-		this.friends = friends;
+		this.posts = new ArrayList<Post>();
+		this.pictures = new ArrayList<Picture>();
+		this.requests = new ArrayList<FriendRequest>();
+		this.friends = new ArrayList<User>();
 		this.deleted = deleted;
 	}
 

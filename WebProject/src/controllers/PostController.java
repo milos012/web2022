@@ -11,7 +11,9 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 import models.Post;
+import models.User;
 import services.PostService;
+import services.UserService;
 
 @Path("/posts")
 public class PostController {
@@ -33,23 +35,34 @@ public class PostController {
 		return postService;
 	}
 	
+	//TODO: srediti putanju da pokazuje na WebContent folder?
+	private UserService getUserService() {
+		UserService userService = (UserService) ctx.getAttribute("UserService");
+		if (userService == null) {
+			userService = new UserService(ctx.getRealPath("."));
+			ctx.setAttribute("UserService", userService);
+		}
+		return userService;
+	}
+	
 	
 	@POST
 	@Path("/create")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Post createPost(Post k) {
-		Post trenutni = (Post) request.getSession().getAttribute("post");
+		User trenutni = (User) request.getSession().getAttribute("user");
 		if(trenutni == null) {
-			Post novipost = getPostService().addPost(k);
-			
-			if(novipost != null) {
-				request.getSession().setAttribute("post", novipost);
-			}
-			return novipost;
+			return null;
+		}
+		Post novipost = getPostService().addPost(k);
+		
+		if(novipost != null) {
+			getUserService().addPostToUser(trenutni, novipost);
+			request.getSession().setAttribute("post", novipost);
 		}
 			
-		return null;
+		return novipost;
 	}
 	
 	@GET
